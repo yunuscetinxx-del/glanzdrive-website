@@ -1,0 +1,6 @@
+# robots.txt for Gleamer Cleaning Services
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: https://gleamer-main.vercel.app/sitemap.xml

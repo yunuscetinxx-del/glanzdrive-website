@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head><script>(function(){var t=localStorage.getItem("theme")||"light";document.documentElement.className=t;document.documentElement.style.colorScheme=t;})()</script>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Documentation — GlanzDrive Cleaning Services</title>
+  <meta name="description" content="GlanzDrive cleaning services documentation, FAQs, and guides."/>
+  <link rel="preload" href="/_next/static/media/83afe278b6a6bb3c-s.p.3a6ba036.woff2" as="font" crossorigin="" type="font/woff2"/>
+  <link rel="stylesheet" href="/_next/static/chunks/f679325862abb4ea.css"/>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml"/>
+  <style>
+    /* Page-specific styles */
+    .doc-hero {
+      background: #1f2a2e;
+      color: #fff;
+      padding: 80px 24px 60px;
+      text-align: center;
+    }
+    .doc-hero .badge {
+      display: inline-block;
+      background: #72deff;
+      color: #1f2a2e;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 4px 14px;
+      border-radius: 20px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+    }
+    .doc-hero h1 {
+      font-size: 2.4rem;
+      font-weight: 800;
+      margin-bottom: 14px;
+      line-height: 1.2;
+    }
+    .doc-hero h1 span { color: #72deff; }
+    .doc-hero p {
+      color: rgba(255,255,255,0.6);
+      max-width: 500px;
+      margin: 0 auto;
+      font-size: 1rem;
+      line-height: 1.7;
+    }
+
+    .doc-layout {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 60px 24px 80px;
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      gap: 48px;
+      align-items: start;
+    }
+
+    /* Sidebar */
+    .doc-sidebar {
+      position: sticky;
+      top: 24px;
+      background: #f8f8f5;
+      border-radius: 14px;
+      padding: 24px 18px;
+    }
+    .doc-sidebar h3 {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #999;
+      margin-bottom: 14px;
+    }
+    .doc-sidebar a {
+      display: block;
+      padding: 8px 12px;
+      border-radius: 8px;
+      color: #1f2a2e;
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 500;
+      transition: background 0.15s, color 0.15s;
+      margin-bottom: 2px;
+    }
+    .doc-sidebar a:hover, .doc-sidebar a.active {
+      background: #72deff;
+      color: #1f2a2e;
+      font-weight: 700;
+    }
+    .doc-sidebar .sidebar-section { margin-top: 18px; }
+
+    /* Content */
+    .doc-content {}
+    .doc-section {
+      margin-bottom: 56px;
+      scroll-margin-top: 24px;
+    }
+    .doc-section h2 {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #1f2a2e;
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #72deff;
+    }
+    .doc-section h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #1f2a2e;
+      margin: 20px 0 8px;
+    }
+    .doc-section p {
+      color: #555;
+      line-height: 1.8;
+      margin-bottom: 12px;
+      font-size: 0.93rem;
+    }
+    .doc-section ul {
+      list-style: none;
+      padding: 0;
+      margin-bottom: 14px;
+    }
+    .doc-section ul li {
+      padding: 6px 0 6px 22px;
+      position: relative;
+      color: #555;
+      font-size: 0.93rem;
+      line-height: 1.6;
+    }
+    .doc-section ul li::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 14px;
+      width: 8px; height: 8px;
+      background: #72deff;
+      border-radius: 50%;
+    }
+
+    /* FAQ accordion */
+    .faq-item {
+      border: 1px solid #e5e5e5;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      overflow: hidden;
+    }
+    .faq-q {
+      padding: 16px 20px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: #1f2a2e;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      user-select: none;
+      background: #fff;
+      transition: background 0.15s;
+    }
+    .faq-q:hover { background: #f8fdf4; }
+    .faq-q.open { background: #f0fde0; }
+    .faq-q .arrow {
+      width: 20px; height: 20px;
+      background: #72deff;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      transition: transform 0.2s;
+      font-size: 0.75rem;
+    }
+    .faq-q.open .arrow { transform: rotate(180deg); }
+    .faq-a {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease, padding 0.2s;
+      padding: 0 20px;
+      background: #fbfff5;
+      color: #555;
+      font-size: 0.88rem;
+      line-height: 1.8;
+    }
+    .faq-a.open { max-height: 300px; padding: 14px 20px; }
+
+    /* Cards */
+    .info-cards {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+    .info-card {
+      background: #f8f8f5;
+      border-radius: 12px;
+      padding: 20px;
+      border-left: 4px solid #72deff;
+    }
+    .info-card h4 {
+      font-weight: 700;
+      font-size: 0.88rem;
+      color: #1f2a2e;
+      margin-bottom: 6px;
+    }
+    .info-card p {
+      font-size: 0.82rem;
+      color: #777;
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    /* Contact CTA */
+    .cta-box {
+      background: #1f2a2e;
+      border-radius: 16px;
+      padding: 32px;
+      text-align: center;
+      margin-top: 40px;
+    }
+    .cta-box h3 { color: #fff; font-size: 1.2rem; margin-bottom: 8px; }
+    .cta-box p { color: rgba(255,255,255,0.6); font-size: 0.88rem; margin-bottom: 20px; }
+    .cta-btn {
+      display: inline-block;
+      background: #72deff;
+      color: #1f2a2e;
+      padding: 12px 28px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.88rem;
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+    .cta-btn:hover { background: #45b8f5; }
+
+    @media (max-width: 768px) {
+      .doc-layout { grid-template-columns: 1fr; }
+      .doc-sidebar { position: static; }
+      .info-cards { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Nav (matches site style) -->
+  <nav style="background:#1f2a2e; padding:18px 32px; display:flex; align-items:center; justify-content:space-between;">
+    <a href="/" style="display:flex; align-items:center; gap:10px; text-decoration:none;">
+      <svg width="140" height="34" viewBox="0 0 140 34" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="2" width="30" height="30" rx="6" fill="#72deff"/><path d="M5 22h20M8 22V14l3-5h8l3 5v8" stroke="#1f2a2e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/><rect x="12" y="14" width="6" height="4" rx="1" stroke="#1f2a2e" stroke-width="1.5" fill="none"/><circle cx="10" cy="22" r="2.2" fill="#1f2a2e"/><circle cx="20" cy="22" r="2.2" fill="#1f2a2e"/><text x="36" y="22" font-family="Montserrat,Arial,sans-serif" font-weight="800" font-size="16" fill="currentColor">GlanzDrive</text></svg>
+      <span style="color:#fff; font-weight:800; font-size:1.1rem;">GlanzDrive</span>
+    </a>
+    <div style="display:flex; gap:24px; align-items:center;">
+      <a href="/" style="color:rgba(255,255,255,0.7); text-decoration:none; font-size:0.88rem; font-weight:500;">Home</a>
+      <a href="/about-us" style="color:rgba(255,255,255,0.7); text-decoration:none; font-size:0.88rem; font-weight:500;">About</a>
+      <a href="/services" style="color:rgba(255,255,255,0.7); text-decoration:none; font-size:0.88rem; font-weight:500;">Services</a>
+      <a href="/contact-us" style="background:#72deff; color:#1f2a2e; padding:9px 20px; border-radius:7px; text-decoration:none; font-size:0.84rem; font-weight:700;">Contact Us</a>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <div class="doc-hero">
+    <div class="badge">Documentation</div>
+    <h1>How can we <span>help you?</span></h1>
+    <p>Everything you need to know about GlanzDrive cleaning services — from booking to aftercare.</p>
+  </div>
+
+  <!-- Content -->
+  <div class="doc-layout">
+
+    <!-- Sidebar -->
+    <aside class="doc-sidebar">
+      <h3>Contents</h3>
+      <a href="#getting-started" class="active">Getting Started</a>
+      <a href="#services">Our Services</a>
+      <a href="#booking">Booking a Service</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#faq">FAQ</a>
+      <div class="sidebar-section">
+        <h3>Quick Links</h3>
+        <a href="/contact-us">Contact Us</a>
+        <a href="/services">All Services</a>
+        <a href="/privacy-policy">Privacy Policy</a>
+        <a href="/terms-and-conditions">Terms of Service</a>
+      </div>
+    </aside>
+
+    <!-- Main content -->
+    <main class="doc-content">
+
+      <section class="doc-section" id="getting-started">
+        <h2>Getting Started</h2>
+        <p>Welcome to GlanzDrive! We provide professional residential cleaning services across England. This guide will help you understand our services, booking process, and what to expect.</p>
+
+        <div class="info-cards">
+          <div class="info-card">
+            <h4>📅 Easy Booking</h4>
+            <p>Book online in minutes. Choose your service, date, and preferred time slot.</p>
+          </div>
+          <div class="info-card">
+            <h4>✅ Vetted Professionals</h4>
+            <p>All our cleaners are background-checked, insured, and professionally trained.</p>
+          </div>
+          <div class="info-card">
+            <h4>🌿 Eco-Friendly</h4>
+            <p>We use environmentally safe products that are gentle on your home and family.</p>
+          </div>
+          <div class="info-card">
+            <h4>💯 Satisfaction Guarantee</h4>
+            <p>Not happy? We'll return and re-clean at no extra cost — no questions asked.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="doc-section" id="services">
+        <h2>Our Services</h2>
+
+        <h3>Regular Cleaning</h3>
+        <p>Our standard cleaning service covers all main areas of your home on a scheduled basis.</p>
+        <ul>
+          <li>Vacuuming and mopping all floors</li>
+          <li>Dusting surfaces, shelves, and fixtures</li>
+          <li>Bathroom and kitchen cleaning</li>
+          <li>Emptying bins and general tidying</li>
+        </ul>
+
+        <h3>Deep Cleaning</h3>
+        <p>A thorough, top-to-bottom clean for homes that need extra attention or periodic intensive care.</p>
+        <ul>
+          <li>Everything in Regular Cleaning</li>
+          <li>Inside oven, fridge, and appliances</li>
+          <li>Grout and tile scrubbing</li>
+          <li>Behind and under furniture</li>
+          <li>Window sills and skirting boards</li>
+        </ul>
+
+        <h3>Move-In / Move-Out</h3>
+        <p>Perfect when transitioning between homes — we ensure the property is spotless for new occupants.</p>
+
+        <h3>Removal & Storage</h3>
+        <p>Combined cleaning and removal service to help you clear and clean simultaneously.</p>
+      </section>
+
+      <section class="doc-section" id="booking">
+        <h2>Booking a Service</h2>
+        <p>Follow these simple steps to schedule your cleaning:</p>
+        <ul>
+          <li><strong>Step 1:</strong> Visit our <a href="/" style="color:#1f2a2e; font-weight:700;">homepage</a> and click "Get a free quote"</li>
+          <li><strong>Step 2:</strong> Select your service type and preferred date/time</li>
+          <li><strong>Step 3:</strong> Enter your address and any special instructions</li>
+          <li><strong>Step 4:</strong> Confirm your booking — you'll receive an email confirmation</li>
+          <li><strong>Step 5:</strong> Our team arrives on time, fully equipped</li>
+        </ul>
+        <p>You can also call us directly or send us a message via the <a href="/contact-us" style="color:#1f2a2e; font-weight:700;">Contact page</a>.</p>
+      </section>
+
+      <section class="doc-section" id="pricing">
+        <h2>Pricing</h2>
+        <p>Our transparent pricing ensures no surprises. All prices are for standard-sized homes.</p>
+        <div class="info-cards">
+          <div class="info-card">
+            <h4>Regular Cleaning</h4>
+            <p>From <strong>$120</strong> per visit. Discounts available for recurring bookings.</p>
+          </div>
+          <div class="info-card">
+            <h4>Deep Cleaning</h4>
+            <p>From <strong>$150</strong>. Recommended every 3–6 months.</p>
+          </div>
+          <div class="info-card">
+            <h4>Move-In / Move-Out</h4>
+            <p>From <strong>$200/mo</strong> for ongoing packages.</p>
+          </div>
+          <div class="info-card">
+            <h4>Removal & Storage</h4>
+            <p>From <strong>$230</strong>. Includes light removal coordination.</p>
+          </div>
+        </div>
+        <p style="font-size:0.82rem; color:#999;">* Prices vary based on property size and specific requirements. Contact us for a free custom quote.</p>
+      </section>
+
+      <section class="doc-section" id="faq">
+        <h2>Frequently Asked Questions</h2>
+
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            Do I need to be home during the cleaning?
+            <span class="arrow">▼</span>
+          </div>
+          <div class="faq-a">
+            No — many clients provide a key or access code. Our cleaners are fully vetted and insured, so you can trust them to clean while you're away.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            What cleaning products do you use?
+            <span class="arrow">▼</span>
+          </div>
+          <div class="faq-a">
+            We use eco-friendly, non-toxic products that are safe for children and pets. If you have specific allergies or preferences, let us know when booking.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            How do I cancel or reschedule?
+            <span class="arrow">▼</span>
+          </div>
+          <div class="faq-a">
+            You can cancel or reschedule up to 24 hours before your appointment at no charge. Contact us via the Contact page or by phone.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            What if I'm not satisfied with the cleaning?
+            <span class="arrow">▼</span>
+          </div>
+          <div class="faq-a">
+            We have a 100% satisfaction guarantee. If anything was missed, simply contact us within 24 hours and we'll return to address it free of charge.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            Are your cleaners insured?
+            <span class="arrow">▼</span>
+          </div>
+          <div class="faq-a">
+            Yes. All GlanzDrive cleaning professionals are fully insured and have passed comprehensive background checks before joining our team.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            Do you offer recurring cleaning plans?
+            <span class="arrow">▼</span>
+          </div>
+          <div class="faq-a">
+            Absolutely! We offer weekly, bi-weekly, and monthly plans with exclusive discounts of up to 20% compared to one-time bookings.
+          </div>
+        </div>
+      </section>
+
+      <!-- CTA -->
+      <div class="cta-box">
+        <h3>Still have questions?</h3>
+        <p>Our team is happy to help — reach out any time.</p>
+        <a href="/contact-us" class="cta-btn">Contact Us →</a>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Footer -->
+  <footer style="background:#1f2a2e; color:rgba(255,255,255,0.5); text-align:center; padding:28px 24px; font-size:0.8rem;">
+    <p>© 2026 GlanzDrive Cleaning Services. All rights reserved.</p>
+    <p style="margin-top:6px;">
+      <a href="/privacy-policy" style="color:rgba(255,255,255,0.5); margin:0 8px;">Privacy Policy</a>
+      <a href="/terms-and-conditions" style="color:rgba(255,255,255,0.5); margin:0 8px;">Terms of Service</a>
+      <a href="/contact-us" style="color:rgba(255,255,255,0.5); margin:0 8px;">Contact</a>
+    </p>
+  </footer>
+
+  
+
+</body>
+</html>
