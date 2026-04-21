@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Admin Dashboard — GlanzDrive</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0f1719;color:#e8eef0;min-height:100vh}
+  a{color:#72deff;text-decoration:none}
+  button{font-family:inherit;cursor:pointer;border:none}
+  /* ===== Login ===== */
+  .login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;background:linear-gradient(135deg,#0f1719,#1f2a2e,#0f1719)}
+  .login-card{background:#1a262a;border:1px solid #2a3a40;border-radius:16px;padding:40px;max-width:420px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,0.5)}
+  .login-card .logo{display:flex;align-items:center;gap:12px;margin-bottom:24px}
+  .login-card .logo img{height:50px}
+  .login-card h1{font-size:1.4rem;margin-bottom:6px}
+  .login-card p.sub{color:#7d9097;margin-bottom:28px;font-size:0.9rem}
+  .field{margin-bottom:16px}
+  .field label{display:block;font-size:0.85rem;font-weight:600;margin-bottom:6px;color:#a8bbc1}
+  .field input{width:100%;padding:12px 14px;background:#0f1719;border:1px solid #2a3a40;border-radius:8px;color:#fff;font-size:0.95rem;outline:none;transition:border 0.2s}
+  .field input:focus{border-color:#72deff}
+  .btn-primary{width:100%;padding:14px;background:#72deff;color:#1f2a2e;border-radius:8px;font-weight:700;font-size:0.95rem;margin-top:8px;transition:opacity 0.2s}
+  .btn-primary:hover{opacity:0.9}
+  .btn-primary:disabled{opacity:0.5;cursor:not-allowed}
+  .err{background:#3a1a1f;border:1px solid #5a2530;color:#ff8a9a;padding:10px;border-radius:8px;font-size:0.85rem;margin-bottom:16px;display:none}
+  .err.show{display:block}
+  /* ===== Dashboard ===== */
+  .app{display:none;grid-template-columns:280px 1fr 380px;height:100vh;overflow:hidden}
+  .app.show{display:grid}
+  @media(max-width:1100px){.app{grid-template-columns:240px 1fr}}
+  @media(max-width:768px){.app{grid-template-columns:1fr}}
+  .sidebar{background:#0a1214;border-right:1px solid #1f2a2e;padding:20px;display:flex;flex-direction:column;overflow-y:auto}
+  .sidebar .brand{display:flex;align-items:center;gap:10px;margin-bottom:30px;padding-bottom:20px;border-bottom:1px solid #1f2a2e}
+  .sidebar .brand img{height:40px}
+  .sidebar .brand .name{font-weight:700;font-size:1.05rem}
+  .stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:24px}
+  .stat{background:#1a262a;padding:14px;border-radius:10px;border:1px solid #1f2a2e}
+  .stat .num{font-size:1.5rem;font-weight:800;color:#72deff}
+  .stat .lbl{font-size:0.7rem;color:#7d9097;text-transform:uppercase;letter-spacing:0.5px;margin-top:4px}
+  .filters{display:flex;flex-direction:column;gap:6px;margin-bottom:20px}
+  .filter-btn{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:transparent;color:#a8bbc1;border-radius:8px;font-weight:600;font-size:0.9rem;text-align:left;transition:background 0.15s}
+  .filter-btn:hover{background:#1a262a}
+  .filter-btn.active{background:#72deff;color:#1f2a2e}
+  .filter-btn .count{background:rgba(0,0,0,0.15);padding:2px 8px;border-radius:10px;font-size:0.75rem}
+  .filter-btn:not(.active) .count{background:#1f2a2e;color:#7d9097}
+  .sidebar-footer{margin-top:auto;padding-top:20px;border-top:1px solid #1f2a2e}
+  .logout-btn{width:100%;padding:10px;background:transparent;color:#ff8a9a;border:1px solid #3a1a1f;border-radius:8px;font-weight:600;font-size:0.85rem}
+  .logout-btn:hover{background:#3a1a1f}
+  /* List */
+  .list-pane{background:#0f1719;overflow-y:auto;border-right:1px solid #1f2a2e}
+  .list-header{padding:18px 20px;border-bottom:1px solid #1f2a2e;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:#0f1719;z-index:5}
+  .list-header h2{font-size:1.1rem}
+  .refresh-btn{padding:8px 12px;background:#1a262a;color:#72deff;border-radius:6px;font-size:0.8rem;font-weight:600}
+  .refresh-btn:hover{background:#2a3a40}
+  .msg-item{padding:16px 20px;border-bottom:1px solid #1a262a;cursor:pointer;transition:background 0.15s;position:relative}
+  .msg-item:hover{background:#131e21}
+  .msg-item.active{background:#1a262a;border-left:3px solid #72deff;padding-left:17px}
+  .msg-head{display:flex;justify-content:space-between;align-items:start;margin-bottom:6px}
+  .msg-name{font-weight:700;font-size:0.95rem}
+  .msg-time{font-size:0.7rem;color:#7d9097}
+  .msg-preview{color:#a8bbc1;font-size:0.85rem;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+  .msg-tags{display:flex;gap:6px;margin-top:8px}
+  .tag{font-size:0.65rem;padding:2px 7px;border-radius:10px;font-weight:600;text-transform:uppercase}
+  .tag.new{background:#72deff;color:#1f2a2e}
+  .tag.in-progress{background:#ffb84d;color:#1f2a2e}
+  .tag.replied{background:#52c878;color:#1f2a2e}
+  .tag.closed{background:#3a4548;color:#a8bbc1}
+  .tag.lang{background:#2a3a40;color:#72deff}
+  .tag.chat{background:#a855f7;color:#fff}
+  .empty{padding:40px 20px;text-align:center;color:#7d9097;font-size:0.9rem}
+  /* Detail */
+  .detail-pane{background:#1a262a;display:flex;flex-direction:column;overflow:hidden}
+  .detail-empty{flex:1;display:flex;align-items:center;justify-content:center;color:#7d9097;flex-direction:column;gap:12px;padding:30px;text-align:center}
+  .detail-empty svg{opacity:0.3}
+  .detail-content{flex:1;display:none;flex-direction:column;overflow:hidden}
+  .detail-content.show{display:flex}
+  .detail-header{padding:20px;border-bottom:1px solid #2a3a40}
+  .detail-header h3{font-size:1.2rem;margin-bottom:6px}
+  .detail-header .contact{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+  .contact a{font-size:0.85rem;background:#0f1719;padding:6px 10px;border-radius:6px;color:#72deff;display:inline-flex;align-items:center;gap:6px}
+  .detail-body{flex:1;overflow-y:auto;padding:20px}
+  .info-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px}
+  .info{background:#0f1719;padding:10px 12px;border-radius:8px}
+  .info .k{font-size:0.7rem;color:#7d9097;text-transform:uppercase;margin-bottom:2px}
+  .info .v{font-size:0.85rem;font-weight:600;word-break:break-word}
+  .msg-body-block{background:#0f1719;padding:14px;border-radius:8px;font-size:0.92rem;line-height:1.6;white-space:pre-wrap;margin-bottom:20px}
+  .replies-section h4{font-size:0.9rem;color:#7d9097;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:12px}
+  .reply{background:#0f1719;border-left:3px solid #72deff;padding:12px 14px;border-radius:0 8px 8px 0;margin-bottom:10px;font-size:0.88rem;line-height:1.5}
+  .reply .meta{font-size:0.7rem;color:#7d9097;margin-bottom:4px}
+  .reply-form{padding:16px;border-top:1px solid #2a3a40;background:#131e21}
+  .reply-form textarea{width:100%;padding:12px;background:#0f1719;border:1px solid #2a3a40;border-radius:8px;color:#fff;font-family:inherit;font-size:0.9rem;resize:vertical;min-height:80px;outline:none}
+  .reply-form textarea:focus{border-color:#72deff}
+  .reply-actions{display:flex;justify-content:space-between;align-items:center;margin-top:10px;gap:10px;flex-wrap:wrap}
+  .status-select{flex:1;padding:8px 10px;background:#0f1719;border:1px solid #2a3a40;border-radius:6px;color:#fff;font-size:0.85rem;outline:none}
+  .send-btn{padding:10px 20px;background:#72deff;color:#1f2a2e;border-radius:6px;font-weight:700;font-size:0.85rem}
+  .send-btn:hover{opacity:0.9}
+  .send-btn:disabled{opacity:0.5;cursor:not-allowed}
+  /* Mobile responsive */
+  @media(max-width:768px){
+    .sidebar{display:none}
+    .app.show .sidebar.mobile-open{display:flex;position:fixed;inset:0;z-index:100}
+    .detail-pane{display:none}
+    .app.show .detail-pane.mobile-show{display:flex;position:fixed;inset:0;z-index:50}
+  }
+  /* Scrollbar */
+  ::-webkit-scrollbar{width:8px;height:8px}
+  ::-webkit-scrollbar-track{background:#0a1214}
+  ::-webkit-scrollbar-thumb{background:#2a3a40;border-radius:4px}
+  ::-webkit-scrollbar-thumb:hover{background:#3a4548}
+  .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#52c878;color:#0f1719;padding:12px 20px;border-radius:8px;font-weight:600;z-index:1000;display:none;animation:slideUp 0.3s}
+  .toast.show{display:block}
+  .toast.err{background:#ff8a9a}
+  @keyframes slideUp{from{opacity:0;transform:translate(-50%,20px)}to{opacity:1;transform:translate(-50%,0)}}
+</style>
+</head>
+<body>
+
+<!-- ===== LOGIN ===== -->
+<div id="loginView" class="login-wrap">
+  <form id="loginForm" class="login-card" autocomplete="off">
+    <div class="logo">
+      <img src="/images/logo/logo-brand.png" alt="GlanzDrive">
+      <div>
+        <h1>Admin Dashboard</h1>
+        <p class="sub">GlanzDrive Cleaning Services</p>
+      </div>
+    </div>
+    <div id="loginErr" class="err"></div>
+    <div class="field">
+      <label>Username</label>
+      <input type="text" id="user" name="user" required autocomplete="username">
+    </div>
+    <div class="field">
+      <label>Password</label>
+      <input type="password" id="pass" name="pass" required autocomplete="current-password">
+    </div>
+    <button type="submit" class="btn-primary" id="loginBtn">Sign In</button>
+  </form>
+</div>
+
+<!-- ===== APP ===== -->
+<div id="app" class="app">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="brand">
+      <img src="/images/logo/logo-brand.png" alt="">
+      <div>
+        <div class="name">GlanzDrive</div>
+        <div style="font-size:0.7rem;color:#7d9097">Admin Panel</div>
+      </div>
+    </div>
+    <div class="stats">
+      <div class="stat"><div class="num" id="statNew">0</div><div class="lbl">New</div></div>
+      <div class="stat"><div class="num" id="statAll">0</div><div class="lbl">Total</div></div>
+    </div>
+    <div class="filters">
+      <button class="filter-btn active" data-filter="all">All <span class="count" id="cAll">0</span></button>
+      <button class="filter-btn" data-filter="new">New <span class="count" id="cNew">0</span></button>
+      <button class="filter-btn" data-filter="in-progress">In Progress <span class="count" id="cIp">0</span></button>
+      <button class="filter-btn" data-filter="replied">Replied <span class="count" id="cRp">0</span></button>
+      <button class="filter-btn" data-filter="closed">Closed <span class="count" id="cCl">0</span></button>
+      <button class="filter-btn" data-filter="chat">Live Chat <span class="count" id="cCh">0</span></button>
+    </div>
+    <div class="sidebar-footer">
+      <a href="/" target="_blank" style="display:block;text-align:center;padding:8px;color:#7d9097;font-size:0.8rem;margin-bottom:10px">View Website ↗</a>
+      <button class="logout-btn" onclick="logout()">Logout</button>
+    </div>
+  </aside>
+  <!-- List -->
+  <section class="list-pane">
+    <div class="list-header">
+      <h2 id="listTitle">All Messages</h2>
+      <button class="refresh-btn" onclick="loadMessages()">↻ Refresh</button>
+    </div>
+    <div id="msgList"></div>
+  </section>
+  <!-- Detail -->
+  <section class="detail-pane">
+    <div id="detailEmpty" class="detail-empty">
+      <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      <div>Select a message to view details</div>
+    </div>
+    <div id="detailContent" class="detail-content">
+      <div class="detail-header">
+        <h3 id="dName">—</h3>
+        <div id="dTags" class="msg-tags"></div>
+        <div class="contact" id="dContact"></div>
+      </div>
+      <div class="detail-body">
+        <div class="info-grid">
+          <div class="info"><div class="k">Phone</div><div class="v" id="dPhone">—</div></div>
+          <div class="info"><div class="k">Language</div><div class="v" id="dLang">—</div></div>
+          <div class="info"><div class="k">Page</div><div class="v" id="dPage">—</div></div>
+          <div class="info"><div class="k">Received</div><div class="v" id="dTime">—</div></div>
+          <div class="info"><div class="k">Services</div><div class="v" id="dServices">—</div></div>
+          <div class="info"><div class="k">IP</div><div class="v" id="dIp" style="font-family:monospace;font-size:0.75rem">—</div></div>
+        </div>
+        <div class="info" style="margin-bottom:20px"><div class="k">Message</div><div class="msg-body-block" id="dMessage" style="margin-top:6px">—</div></div>
+        <div class="replies-section">
+          <h4>Conversation</h4>
+          <div id="dReplies"></div>
+        </div>
+      </div>
+      <form class="reply-form" id="replyForm">
+        <textarea id="replyText" placeholder="Type your reply..." required></textarea>
+        <div class="reply-actions">
+          <select class="status-select" id="statusSelect">
+            <option value="">— Keep status —</option>
+            <option value="new">New</option>
+            <option value="in-progress">In Progress</option>
+            <option value="replied">Replied</option>
+            <option value="closed">Closed</option>
+          </select>
+          <a id="waReplyLink" href="#" target="_blank" style="padding:10px 14px;background:#25d366;color:#fff;border-radius:6px;font-weight:700;font-size:0.85rem;text-decoration:none;display:none">WhatsApp ↗</a>
+          <button type="submit" class="send-btn">Send Reply</button>
+        </div>
+      </form>
+    </div>
+  </section>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script>
+const TOKEN_KEY='gd-admin-token';
+let token=localStorage.getItem(TOKEN_KEY);
+let messages=[];
+let currentId=null;
+let currentFilter='all';
+
+const $=s=>document.querySelector(s);
+const $$=s=>document.querySelectorAll(s);
+
+function toast(msg,err=false){
+  const t=$('#toast');t.textContent=msg;t.className='toast show'+(err?' err':'');
+  setTimeout(()=>t.classList.remove('show'),2500);
+}
+
+function showApp(){
+  $('#loginView').style.display='none';
+  $('#app').classList.add('show');
+  loadMessages();
+}
+function showLogin(){
+  $('#loginView').style.display='flex';
+  $('#app').classList.remove('show');
+}
+
+function logout(){
+  localStorage.removeItem(TOKEN_KEY);
+  token=null;
+  showLogin();
+}
+
+$('#loginForm').addEventListener('submit',async e=>{
+  e.preventDefault();
+  const btn=$('#loginBtn');btn.disabled=true;btn.textContent='Signing in...';
+  $('#loginErr').classList.remove('show');
+  try{
+    const r=await fetch('/api/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user:$('#user').value,pass:$('#pass').value})});
+    const j=await r.json();
+    if(!r.ok)throw new Error(j.error||'Login failed');
+    token=j.token;
+    localStorage.setItem(TOKEN_KEY,token);
+    showApp();
+  }catch(e){
+    const er=$('#loginErr');er.textContent=e.message;er.classList.add('show');
+  }finally{btn.disabled=false;btn.textContent='Sign In';}
+});
+
+async function loadMessages(){
+  if(!token)return showLogin();
+  try{
+    const r=await fetch('/api/messages',{headers:{Authorization:'Bearer '+token}});
+    if(r.status===401){logout();return;}
+    const j=await r.json();
+    messages=j.items||[];
+    render();
+  }catch(e){toast('Failed to load messages',true);}
+}
+
+function render(){
+  const counts={all:messages.length,new:0,'in-progress':0,replied:0,closed:0,chat:0};
+  messages.forEach(m=>{counts[m.status]=(counts[m.status]||0)+1;if(m.type==='chat')counts.chat++;});
+  $('#statNew').textContent=counts.new;
+  $('#statAll').textContent=counts.all;
+  $('#cAll').textContent=counts.all;$('#cNew').textContent=counts.new;
+  $('#cIp').textContent=counts['in-progress'];$('#cRp').textContent=counts.replied;
+  $('#cCl').textContent=counts.closed;$('#cCh').textContent=counts.chat;
+
+  const list=$('#msgList');
+  const filtered=messages.filter(m=>{
+    if(currentFilter==='all')return true;
+    if(currentFilter==='chat')return m.type==='chat';
+    return m.status===currentFilter;
+  });
+  if(!filtered.length){list.innerHTML='<div class="empty">No messages here yet.</div>';return;}
+  list.innerHTML=filtered.map(m=>{
+    const t=new Date(m.createdAt).toLocaleString();
+    const isChat=m.type==='chat';
+    return `<div class="msg-item${m.id===currentId?' active':''}" onclick="select('${m.id}')">
+      <div class="msg-head">
+        <div class="msg-name">${esc(m.name)}</div>
+        <div class="msg-time">${t}</div>
+      </div>
+      <div class="msg-preview">${esc(m.message||m.email||'')}</div>
+      <div class="msg-tags">
+        <span class="tag ${m.status}">${m.status}</span>
+        ${isChat?'<span class="tag chat">chat</span>':''}
+        <span class="tag lang">${m.lang}</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function esc(s){return String(s||'').replace(/[<>&"']/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',"'":'&#39;'}[c]));}
+
+window.select=function(id){
+  currentId=id;
+  const m=messages.find(x=>x.id===id);
+  if(!m)return;
+  render();
+  $('#detailEmpty').style.display='none';
+  $('#detailContent').classList.add('show');
+  $('#dName').textContent=m.name;
+  $('#dPhone').textContent=m.phone||'—';
+  $('#dLang').textContent=(m.lang||'en').toUpperCase();
+  $('#dPage').textContent=m.page||'/';
+  $('#dTime').textContent=new Date(m.createdAt).toLocaleString();
+  $('#dServices').textContent=(m.services||[]).join(', ')||'—';
+  $('#dIp').textContent=m.ip||'—';
+  $('#dMessage').textContent=m.message||'(no message)';
+  $('#dTags').innerHTML=`<span class="tag ${m.status}">${m.status}</span>${m.type==='chat'?'<span class="tag chat">live chat</span>':''}<span class="tag lang">${m.lang}</span>`;
+  const contact=[];
+  if(m.email)contact.push(`<a href="mailto:${esc(m.email)}">✉ ${esc(m.email)}</a>`);
+  if(m.phone)contact.push(`<a href="tel:${esc(m.phone)}">☎ ${esc(m.phone)}</a>`);
+  $('#dContact').innerHTML=contact.join('');
+  // WhatsApp quick reply
+  const wa=$('#waReplyLink');
+  if(m.phone){
+    const num=m.phone.replace(/[^0-9]/g,'');
+    wa.href=`https://wa.me/${num}?text=${encodeURIComponent('Hello '+m.name+', regarding your inquiry on GlanzDrive — ')}`;
+    wa.style.display='inline-block';
+  }else wa.style.display='none';
+  // Replies
+  const rep=$('#dReplies');
+  if(!m.replies||!m.replies.length){
+    rep.innerHTML='<div style="color:#7d9097;font-size:0.85rem">No replies yet.</div>';
+  }else{
+    rep.innerHTML=m.replies.map(r=>`<div class="reply"><div class="meta">${esc(r.by||'admin')} • ${new Date(r.at).toLocaleString()}</div>${esc(r.text)}</div>`).join('');
+  }
+  $('#statusSelect').value='';
+  $('#replyText').value='';
+};
+
+$('#replyForm').addEventListener('submit',async e=>{
+  e.preventDefault();
+  if(!currentId)return;
+  const text=$('#replyText').value.trim();
+  const status=$('#statusSelect').value;
+  if(!text&&!status)return;
+  try{
+    const r=await fetch('/api/reply',{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+token},body:JSON.stringify({id:currentId,text,status})});
+    if(r.status===401){logout();return;}
+    const j=await r.json();
+    if(!r.ok)throw new Error(j.error||'Failed');
+    toast('Reply saved');
+    await loadMessages();
+    select(currentId);
+  }catch(e){toast(e.message,true);}
+});
+
+$$('.filter-btn').forEach(b=>b.addEventListener('click',()=>{
+  $$('.filter-btn').forEach(x=>x.classList.remove('active'));
+  b.classList.add('active');
+  currentFilter=b.dataset.filter;
+  $('#listTitle').textContent=b.textContent.replace(/\d+/,'').trim();
+  render();
+}));
+
+// Auto-refresh every 30s
+setInterval(()=>{if(token&&document.visibilityState==='visible')loadMessages();},30000);
+
+// Init
+if(token)showApp();else showLogin();
+</script>
+</body>
+</html>

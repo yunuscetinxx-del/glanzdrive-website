@@ -1,3 +1,22 @@
+# robots.txt for GlanzDrive Cleaning Services
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /api
+Disallow: /*.json$
+
+# Block known bad bots
+User-agent: SemrushBot
+Disallow: /
+User-agent: AhrefsBot
+Disallow: /
+User-agent: MJ12bot
+Disallow: /
+User-agent: DotBot
+Disallow: /
+
+# Sitemap
+Sitemap: https://gleamer-main.vercel.app/sitemap.xml
 # robots.txt for Gleamer Cleaning Services
 User-agent: *
 Allow: /
