@@ -93,6 +93,18 @@ app.use((req, res, next) => {
 app.use(express.static(__dirname, {
   extensions: ['html'],
   setHeaders: (res, filePath) => {
+    // Force UTF-8 charset so German umlauts (ä,ö,ü,ß) render correctly
+    if (/\.html?$/i.test(filePath)) {
+      res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    } else if (/\.js$/i.test(filePath)) {
+      res.setHeader('Content-Type', 'application/javascript; charset=utf-8');
+    } else if (/\.css$/i.test(filePath)) {
+      res.setHeader('Content-Type', 'text/css; charset=utf-8');
+    } else if (/\.json$/i.test(filePath)) {
+      res.setHeader('Content-Type', 'application/json; charset=utf-8');
+    } else if (/\.xml$/i.test(filePath)) {
+      res.setHeader('Content-Type', 'application/xml; charset=utf-8');
+    }
     if (/\.(js|css|woff2?|png|jpe?g|svg|webp|gif|ico)$/i.test(filePath)) {
       res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
     }

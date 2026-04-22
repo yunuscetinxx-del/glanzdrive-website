@@ -334,32 +334,23 @@ const MPH_CONFIG = {
 
       form.addEventListener('submit', async e => {
         e.preventDefault();
-        const services = [...form.querySelectorAll('label')].filter(l => {
-          const cb = form.querySelector(`#${CSS.escape(l.getAttribute('for') || '')}`);
-          if (!cb) return false;
-          const span = document.querySelector(`[aria-checked="true"][id$="${l.htmlFor}"]`);
-          return !!span;
-        }).map(l => l.textContent.trim());
-        // Better: collect all checked role=checkbox via aria-checked
-        const checkedServices = [...form.parentElement.querySelectorAll('[role="checkbox"][aria-checked="true"]')].map(s => {
-          const id = s.id;
-          const label = document.querySelector(`label[for="${form.querySelector('input[type=checkbox][aria-hidden=true]')?.id}"]`);
-          return label?.textContent || '';
-        }).filter(Boolean);
-
-        // Simpler: read sibling labels of inputs[type=checkbox]
-        const altServices = [...form.parentElement.querySelectorAll('input[type="checkbox"][aria-hidden="true"]')]
-          .filter(i => i.previousElementSibling?.getAttribute('aria-checked') === 'true' || i.checked)
-          .map(i => document.querySelector(`label[for="${i.id}"]`)?.textContent?.trim()).filter(Boolean);
+        // Collect checked services: walk each role=checkbox span, find its sibling input + matching label
+        const altServices = [];
+        form.parentElement.querySelectorAll('span[role="checkbox"][aria-checked="true"]').forEach(span => {
+          const input = span.parentElement?.querySelector('input[type="checkbox"][aria-hidden="true"]');
+          if (!input) return;
+          const lbl = document.querySelector(`label[for="${CSS.escape(input.id)}"]`);
+          if (lbl) altServices.push(lbl.textContent.trim());
+        });
 
         const payload = {
           name: hasName.value,
           email: hasEmail.value,
           phone: form.querySelector('input[name="number"], input[name="phone"], input[type="tel"]')?.value || '',
-          services: altServices.length ? altServices : services,
+          services: altServices,
           message: form.querySelector('textarea[name="message"]')?.value || '',
           website: form.querySelector('input[name="website"]')?.value || '',
-          lang: document.documentElement.lang || 'en',
+          lang: document.documentElement.lang || 'de',
           page: location.pathname,
         };
 
@@ -389,6 +380,50 @@ const MPH_CONFIG = {
     setTimeout(() => t.remove(), 4000);
   }
 
+  // ============ Fix custom base-ui checkboxes (toggle on click) ============
+  function fixCheckboxes() {
+    function toggle(span) {
+      const checked = span.getAttribute('aria-checked') === 'true';
+      const next = !checked;
+      span.setAttribute('aria-checked', String(next));
+      if (next) { span.setAttribute('data-checked', ''); span.removeAttribute('data-unchecked'); }
+      else { span.setAttribute('data-unchecked', ''); span.removeAttribute('data-checked'); }
+      // Sync hidden input (next sibling)
+      const input = span.parentElement?.querySelector('input[type="checkbox"][aria-hidden="true"]');
+      if (input) input.checked = next;
+      // Visual: add a checkmark icon when checked
+      if (next && !span.querySelector('.mph-check-icon')) {
+        span.innerHTML = '<svg class="mph-check-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="color:#1f2a2e;"><polyline points="20 6 9 17 4 12"/></svg>';
+        span.style.background = '#72deff';
+        span.style.borderColor = '#72deff';
+      } else if (!next) {
+        span.innerHTML = '';
+        span.style.background = '';
+        span.style.borderColor = '';
+      }
+    }
+
+    document.querySelectorAll('span[role="checkbox"][data-slot="checkbox"]').forEach(span => {
+      if (span.dataset.mphBound) return;
+      span.dataset.mphBound = '1';
+      span.style.cursor = 'pointer';
+      span.addEventListener('click', e => { e.preventDefault(); toggle(span); });
+      span.addEventListener('keydown', e => {
+        if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); toggle(span); }
+      });
+      // Make label clickable too
+      const input = span.parentElement?.querySelector('input[type="checkbox"][aria-hidden="true"]');
+      if (input) {
+        const label = document.querySelector(`label[for="${CSS.escape(input.id)}"]`);
+        if (label && !label.dataset.mphBound) {
+          label.dataset.mphBound = '1';
+          label.style.cursor = 'pointer';
+          label.addEventListener('click', e => { e.preventDefault(); toggle(span); });
+        }
+      }
+    });
+  }
+
   // ============ Inject Blog link into nav ============
   function injectBlogNav() {
     if (location.pathname.startsWith('/blog')) return; // already on blog
@@ -414,6 +449,7 @@ const MPH_CONFIG = {
     injectChatWidget();
     injectBlogNav();
     injectFaq();
+    fixCheckboxes();
     attachQuoteForm();
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
