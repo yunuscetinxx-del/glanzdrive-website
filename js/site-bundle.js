@@ -1,12 +1,12 @@
-// ===== GlanzDrive site bundle =====
+// ===== Meine Putzhilfe site bundle =====
 // Cookie consent (GDPR/DSGVO) + WhatsApp button + Live chat + Sticky CTA + JSON-LD SEO + Quote form handler
 // Configure once at the top:
-const GLANZDRIVE_CONFIG = {
-  whatsappNumber: '491234567890', // Replace with real number (international format, no +)
-  email: 'support@glanzdrive.com',
-  phone: '+1 0239 0310',
-  address: { street: 'Blane Street', city: 'Manchester', country: 'GB', postal: 'M1 1AA' },
-  geo: { lat: 53.4808, lng: -2.2426 },
+const MPH_CONFIG = {
+  whatsappNumber: '4917631795410', // Owner WhatsApp (international, no +)
+  email: 'kontakt@meine-putzhilfe.de',
+  phone: '+49 176 31795410',
+  address: { street: 'Musterstraße 1', city: 'Berlin', country: 'DE', postal: '10115' },
+  geo: { lat: 52.5200, lng: 13.4050 },
   ga4Id: '', // 'G-XXXXXXXXXX' to enable Google Analytics 4
   trustpilotBusinessUnit: '', // Trustpilot business unit ID
 };
@@ -22,23 +22,23 @@ const GLANZDRIVE_CONFIG = {
       '@context': 'https://schema.org',
       '@type': 'CleaningService',
       '@id': location.origin + '/#business',
-      name: 'GlanzDrive',
+      name: 'Meine Putzhilfe',
       description: lang === 'de'
         ? 'Professionelle Reinigungsdienste für Privatkunden – Grundreinigung, Ein-/Auszugsreinigung und mehr.'
         : 'Professional residential cleaning services – deep cleaning, move-in/move-out and more.',
       url: location.origin,
-      telephone: GLANZDRIVE_CONFIG.phone,
-      email: GLANZDRIVE_CONFIG.email,
+      telephone: MPH_CONFIG.phone,
+      email: MPH_CONFIG.email,
       image: location.origin + '/images/logo/logo-brand.png',
       logo: location.origin + '/images/logo/logo-brand.png',
       address: {
         '@type': 'PostalAddress',
-        streetAddress: GLANZDRIVE_CONFIG.address.street,
-        addressLocality: GLANZDRIVE_CONFIG.address.city,
-        postalCode: GLANZDRIVE_CONFIG.address.postal,
-        addressCountry: GLANZDRIVE_CONFIG.address.country,
+        streetAddress: MPH_CONFIG.address.street,
+        addressLocality: MPH_CONFIG.address.city,
+        postalCode: MPH_CONFIG.address.postal,
+        addressCountry: MPH_CONFIG.address.country,
       },
-      geo: { '@type': 'GeoCoordinates', latitude: GLANZDRIVE_CONFIG.geo.lat, longitude: GLANZDRIVE_CONFIG.geo.lng },
+      geo: { '@type': 'GeoCoordinates', latitude: MPH_CONFIG.geo.lat, longitude: MPH_CONFIG.geo.lng },
       openingHoursSpecification: [
         { '@type': 'OpeningHoursSpecification', dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'], opens: '08:00', closes: '18:00' },
         { '@type': 'OpeningHoursSpecification', dayOfWeek: 'Saturday', opens: '09:00', closes: '14:00' },
@@ -93,26 +93,26 @@ const GLANZDRIVE_CONFIG = {
   }
 
   function maybeInitAnalytics(allowed) {
-    if (!allowed || !GLANZDRIVE_CONFIG.ga4Id) return;
+    if (!allowed || !MPH_CONFIG.ga4Id) return;
     if (document.getElementById('gd-ga4')) return;
     const s = document.createElement('script');
     s.id = 'gd-ga4'; s.async = true;
-    s.src = `https://www.googletagmanager.com/gtag/js?id=${GLANZDRIVE_CONFIG.ga4Id}`;
+    s.src = `https://www.googletagmanager.com/gtag/js?id=${MPH_CONFIG.ga4Id}`;
     document.head.appendChild(s);
     window.dataLayer = window.dataLayer || [];
     function gtag() { window.dataLayer.push(arguments); }
     gtag('js', new Date());
-    gtag('config', GLANZDRIVE_CONFIG.ga4Id, { anonymize_ip: true });
+    gtag('config', MPH_CONFIG.ga4Id, { anonymize_ip: true });
     window.gtag = gtag;
   }
 
   // ============ 3. WhatsApp floating button ============
   function injectWhatsApp() {
     if (document.getElementById('gd-whatsapp')) return;
-    if (!GLANZDRIVE_CONFIG.whatsappNumber) return;
+    if (!MPH_CONFIG.whatsappNumber) return;
     const a = document.createElement('a');
     a.id = 'gd-whatsapp';
-    a.href = `https://wa.me/${GLANZDRIVE_CONFIG.whatsappNumber}?text=${encodeURIComponent(T('Hello GlanzDrive, I would like to ask about your services.', 'Hallo GlanzDrive, ich habe eine Frage zu Ihren Leistungen.'))}`;
+    a.href = `https://wa.me/${MPH_CONFIG.whatsappNumber}?text=${encodeURIComponent(T('Hello Meine Putzhilfe, I would like to ask about your services.', 'Hallo Meine Putzhilfe, ich habe eine Frage zu Ihren Leistungen.'))}`;
     a.target = '_blank';
     a.rel = 'noopener';
     a.setAttribute('aria-label', 'WhatsApp');
@@ -128,12 +128,12 @@ const GLANZDRIVE_CONFIG = {
     if (document.getElementById('gd-sticky-cta')) return;
     if (window.innerWidth > 768) return;
     if (location.pathname.startsWith('/admin')) return;
-    const wa = GLANZDRIVE_CONFIG.whatsappNumber ? `<a href="https://wa.me/${GLANZDRIVE_CONFIG.whatsappNumber}" target="_blank" style="flex:1;padding:13px;background:#25d366;color:#fff;border-radius:8px;font-weight:700;font-size:0.9rem;text-decoration:none;text-align:center;">WhatsApp</a>` : '';
+    const wa = MPH_CONFIG.whatsappNumber ? `<a href="https://wa.me/${MPH_CONFIG.whatsappNumber}" target="_blank" style="flex:1;padding:13px;background:#25d366;color:#fff;border-radius:8px;font-weight:700;font-size:0.9rem;text-decoration:none;text-align:center;">WhatsApp</a>` : '';
     const cta = document.createElement('div');
     cta.id = 'gd-sticky-cta';
     cta.style.cssText = 'position:fixed;bottom:0;left:0;right:0;z-index:9996;background:#fff;border-top:1px solid #e0e0e0;padding:10px 14px;display:flex;gap:8px;box-shadow:0 -4px 12px rgba(0,0,0,0.1);';
     cta.innerHTML = `
-      <a href="tel:${GLANZDRIVE_CONFIG.phone.replace(/\s/g,'')}" style="flex:1;padding:13px;background:#1f2a2e;color:#fff;border-radius:8px;font-weight:700;font-size:0.9rem;text-decoration:none;text-align:center;">${T('Call', 'Anrufen')}</a>
+      <a href="tel:${MPH_CONFIG.phone.replace(/\s/g,'')}" style="flex:1;padding:13px;background:#1f2a2e;color:#fff;border-radius:8px;font-weight:700;font-size:0.9rem;text-decoration:none;text-align:center;">${T('Call', 'Anrufen')}</a>
       ${wa}
       <a href="/contact-us" style="flex:1.2;padding:13px;background:#72deff;color:#1f2a2e;border-radius:8px;font-weight:700;font-size:0.9rem;text-decoration:none;text-align:center;">${T('Book', 'Buchen')}</a>
     `;
@@ -292,6 +292,22 @@ const GLANZDRIVE_CONFIG = {
     setTimeout(() => t.remove(), 4000);
   }
 
+  // ============ Inject Blog link into nav ============
+  function injectBlogNav() {
+    if (location.pathname.startsWith('/blog')) return; // already on blog
+    // Find first nav with Contact us link
+    const contactLink = document.querySelector('nav a[href="/contact-us"], nav a[href="/contact-us/"]');
+    if (!contactLink) return;
+    const li = contactLink.closest('li');
+    if (!li || document.getElementById('mph-blog-nav')) return;
+    const newLi = li.cloneNode(true);
+    newLi.id = 'mph-blog-nav';
+    const a = newLi.querySelector('a');
+    a.setAttribute('href', '/blog/');
+    a.textContent = T('Blog', 'Ratgeber');
+    li.parentNode.insertBefore(newLi, li);
+  }
+
   // ============ Init ============
   function init() {
     injectSchema();
@@ -299,6 +315,7 @@ const GLANZDRIVE_CONFIG = {
     injectWhatsApp();
     injectStickyCta();
     injectChatWidget();
+    injectBlogNav();
     attachQuoteForm();
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);

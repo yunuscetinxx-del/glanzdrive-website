@@ -2,6 +2,113 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://meine-putzhilfe.de/</loc>
+    <xhtml:link rel="alternate" hreflang="de" href="https://meine-putzhilfe.de/?lang=de"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://meine-putzhilfe.de/?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://meine-putzhilfe.de/"/>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://meine-putzhilfe.de/about-us/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://meine-putzhilfe.de/contact-us/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://meine-putzhilfe.de/services/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://meine-putzhilfe.de/services/regular-cleaning/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://meine-putzhilfe.de/services/deep-cleaning/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://meine-putzhilfe.de/services/movein-moveout/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://meine-putzhilfe.de/services/eco-friendly-cleaning/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://meine-putzhilfe.de/services/post-renovation-cleaning/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://meine-putzhilfe.de/services/removal-storage/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://meine-putzhilfe.de/blog/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://meine-putzhilfe.de/blog/was-kostet-putzhilfe/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+    <lastmod>2026-04-15</lastmod>
+  </url>
+  <url>
+    <loc>https://meine-putzhilfe.de/blog/putzhilfe-anmelden/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+    <lastmod>2026-04-12</lastmod>
+  </url>
+  <url>
+    <loc>https://meine-putzhilfe.de/blog/reinigungsfirma-vs-putzhilfe/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+    <lastmod>2026-04-10</lastmod>
+  </url>
+  <url>
+    <loc>https://meine-putzhilfe.de/blog/wohnungsubergabe-checkliste/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+    <lastmod>2026-04-08</lastmod>
+  </url>
+  <url>
+    <loc>https://meine-putzhilfe.de/blog/grundreinigung-tipps/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+    <lastmod>2026-04-05</lastmod>
+  </url>
+  <url>
+    <loc>https://meine-putzhilfe.de/impressum/</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://meine-putzhilfe.de/datenschutz/</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://meine-putzhilfe.de/terms-and-conditions/</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+</urlset>
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
     <loc>https://gleamer-main.vercel.app/</loc>
     <xhtml:link rel="alternate" hreflang="en" href="https://gleamer-main.vercel.app/?lang=en"/>
     <xhtml:link rel="alternate" hreflang="de" href="https://gleamer-main.vercel.app/?lang=de"/>

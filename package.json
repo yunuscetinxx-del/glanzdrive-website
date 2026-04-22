@@ -1,9 +1,9 @@
 {
-  "name": "glanzdrive-website",
+  "name": "meine-putzhilfe-website",
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "GlanzDrive cleaning company website with admin dashboard",
+  "description": "Meine Putzhilfe Reinigung company website with admin dashboard",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"

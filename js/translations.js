@@ -1,4 +1,4 @@
-// === GlanzDrive i18n + SEO ===
+// === Meine Putzhilfe i18n + SEO ===
 // Auto-detects browser language, supports ?lang=de URL param, persists to localStorage
 // Translates body text, attributes, <title>, meta description; injects hreflang/og:locale SEO tags
 const TRANSLATIONS = {
@@ -12,7 +12,7 @@ const TRANSLATIONS = {
   "Book a service": "Service buchen",
 
   // Banner
-  "GlanzDrive cleaning": "GlanzDrive Reinigung",
+  "Meine Putzhilfe Reinigung": "Meine Putzhilfe Reinigung",
   "Trusted Residential Cleaning Services": "Vertrauenswürdige Reinigungsdienste für Ihr Zuhause",
   "Enjoy a pristine home with our expert cleaning services. Book now for a cleaner, fresher living space.": "Genießen Sie ein makelloses Zuhause mit unseren professionellen Reinigungsdiensten. Buchen Sie jetzt für ein saubereres, frischeres Wohnambiente.",
 
@@ -65,9 +65,9 @@ const TRANSLATIONS = {
   "What our clients say": "Was unsere Kunden sagen",
   "Feedback from satisfied customers.": "Feedback zufriedener Kunden.",
   "Gain insight into how our cleaning services have transformed homes and exceeded expectations.": "Erfahren Sie, wie unsere Reinigungsdienste Häuser verwandelt und Erwartungen übertroffen haben.",
-  "\"GlanzDrive transformed my home! Highly recommend their attention to detail.\"": "\"GlanzDrive hat mein Zuhause verwandelt! Ich empfehle ihre Liebe zum Detail wärmstens.\"",
-  "I'm consistently impressed by the professionalism and thoroughness of GlanzDrive's team. My house has never looked better!": "Ich bin immer wieder beeindruckt von der Professionalität und Gründlichkeit des GlanzDrive-Teams. Mein Haus sah noch nie so gut aus!",
-  "I appreciate the flexibility and reliability of GlanzDrive's services. They always go above and beyond to exceed my expectations!": "Ich schätze die Flexibilität und Zuverlässigkeit der GlanzDrive-Dienste. Sie übertreffen stets meine Erwartungen!",
+  "\"Meine Putzhilfe transformed my home! Highly recommend their attention to detail.\"": "\"Meine Putzhilfe hat mein Zuhause verwandelt! Ich empfehle ihre Liebe zum Detail wärmstens.\"",
+  "I'm consistently impressed by the professionalism and thoroughness of Meine Putzhilfe's team. My house has never looked better!": "Ich bin immer wieder beeindruckt von der Professionalität und Gründlichkeit des Meine Putzhilfe-Teams. Mein Haus sah noch nie so gut aus!",
+  "I appreciate the flexibility and reliability of Meine Putzhilfe's services. They always go above and beyond to exceed my expectations!": "Ich schätze die Flexibilität und Zuverlässigkeit der Meine Putzhilfe-Dienste. Sie übertreffen stets meine Erwartungen!",
 
   // Pricing
   "Transparent pricing": "Transparente Preise",
@@ -117,22 +117,22 @@ const TRANSLATIONS = {
 
 // Page-level SEO translations
 const SEO_TITLES = {
-  "GlanzDrive": "GlanzDrive – Professionelle Reinigungsdienste",
-  "About us | GlanzDrive": "Über uns | GlanzDrive",
-  "Services | GlanzDrive": "Dienstleistungen | GlanzDrive",
-  "Services detail | GlanzDrive": "Service-Details | GlanzDrive",
-  "Contact us | GlanzDrive": "Kontakt | GlanzDrive",
-  "Documentation — GlanzDrive Cleaning Services": "Dokumentation — GlanzDrive Reinigungsdienste",
-  "Privacy-Policy | GlanzDrive": "Datenschutzrichtlinie | GlanzDrive",
-  "Terms & Condition | GlanzDrive": "Nutzungsbedingungen | GlanzDrive",
+  "Meine Putzhilfe": "Meine Putzhilfe – Professionelle Reinigungsdienste",
+  "About us | Meine Putzhilfe": "Über uns | Meine Putzhilfe",
+  "Services | Meine Putzhilfe": "Dienstleistungen | Meine Putzhilfe",
+  "Services detail | Meine Putzhilfe": "Service-Details | Meine Putzhilfe",
+  "Contact us | Meine Putzhilfe": "Kontakt | Meine Putzhilfe",
+  "Documentation — Meine Putzhilfe": "Dokumentation — Meine Putzhilfe Reinigungsdienste",
+  "Privacy-Policy | Meine Putzhilfe": "Datenschutzrichtlinie | Meine Putzhilfe",
+  "Terms & Condition | Meine Putzhilfe": "Nutzungsbedingungen | Meine Putzhilfe",
 };
 
 const SEO_DESCRIPTIONS = {
-  "GlanzDrive - homepage": "GlanzDrive – Vertrauenswürdige Reinigungsdienste für Ihr Zuhause. Regelmäßige Reinigung, Grundreinigung, Ein-/Auszugsreinigung und mehr. Jetzt kostenloses Angebot anfordern.",
+  "Meine Putzhilfe - homepage": "Meine Putzhilfe – Vertrauenswürdige Reinigungsdienste für Ihr Zuhause. Regelmäßige Reinigung, Grundreinigung, Ein-/Auszugsreinigung und mehr. Jetzt kostenloses Angebot anfordern.",
 };
 
 (function () {
-  const LANG_KEY = 'glanzdrive-lang';
+  const LANG_KEY = 'meine-putzhilfe-lang';
   const SUPPORTED = ['en', 'de'];
 
   // Reverse map (de -> en)
@@ -315,7 +315,7 @@ const TRANSLATIONS = {
   "Book a service": "Service buchen",
 
   // Banner
-  "GlanzDrive cleaning": "GlanzDrive Reinigung",
+  "Meine Putzhilfe Reinigung": "Meine Putzhilfe Reinigung",
   "Trusted Residential Cleaning Services": "Vertrauenswürdige Reinigungsdienste für Ihr Zuhause",
   "Enjoy a pristine home with our expert cleaning services. Book now for a cleaner, fresher living space.": "Genießen Sie ein makelloses Zuhause mit unseren professionellen Reinigungsdiensten. Buchen Sie jetzt für ein saubereres, frischeres Wohnambiente.",
 
@@ -368,9 +368,9 @@ const TRANSLATIONS = {
   "What our clients say": "Was unsere Kunden sagen",
   "Feedback from satisfied customers.": "Feedback zufriedener Kunden.",
   "Gain insight into how our cleaning services have transformed homes and exceeded expectations.": "Erfahren Sie, wie unsere Reinigungsdienste Häuser verwandelt und Erwartungen übertroffen haben.",
-  "\"GlanzDrive transformed my home! Highly recommend their attention to detail.\"": "\"GlanzDrive hat mein Zuhause verwandelt! Ich empfehle ihre Liebe zum Detail wärmstens.\"",
-  "I'm consistently impressed by the professionalism and thoroughness of GlanzDrive's team. My house has never looked better!": "Ich bin immer wieder beeindruckt von der Professionalität und Gründlichkeit des GlanzDrive-Teams. Mein Haus sah noch nie so gut aus!",
-  "I appreciate the flexibility and reliability of GlanzDrive's services. They always go above and beyond to exceed my expectations!": "Ich schätze die Flexibilität und Zuverlässigkeit der GlanzDrive-Dienste. Sie übertreffen stets meine Erwartungen!",
+  "\"Meine Putzhilfe transformed my home! Highly recommend their attention to detail.\"": "\"Meine Putzhilfe hat mein Zuhause verwandelt! Ich empfehle ihre Liebe zum Detail wärmstens.\"",
+  "I'm consistently impressed by the professionalism and thoroughness of Meine Putzhilfe's team. My house has never looked better!": "Ich bin immer wieder beeindruckt von der Professionalität und Gründlichkeit des Meine Putzhilfe-Teams. Mein Haus sah noch nie so gut aus!",
+  "I appreciate the flexibility and reliability of Meine Putzhilfe's services. They always go above and beyond to exceed my expectations!": "Ich schätze die Flexibilität und Zuverlässigkeit der Meine Putzhilfe-Dienste. Sie übertreffen stets meine Erwartungen!",
 
   // Pricing
   "Transparent pricing": "Transparente Preise",
@@ -424,7 +424,7 @@ const TRANSLATIONS = {
 };
 
 (function() {
-  const LANG_KEY = 'glanzdrive-lang';
+  const LANG_KEY = 'meine-putzhilfe-lang';
 
   function getStoredLang() {
     return localStorage.getItem(LANG_KEY) || 'en';

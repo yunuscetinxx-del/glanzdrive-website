@@ -1,4 +1,29 @@
-# robots.txt for GlanzDrive Cleaning Services
+# robots.txt for Meine Putzhilfe
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /api
+Disallow: /*.json$
+
+# Block known SEO scrapers
+User-agent: SemrushBot
+Disallow: /
+User-agent: AhrefsBot
+Disallow: /
+User-agent: MJ12bot
+Disallow: /
+User-agent: DotBot
+Disallow: /
+User-agent: PetalBot
+Disallow: /
+User-agent: GPTBot
+Disallow: /admin
+User-agent: CCBot
+Disallow: /admin
+
+# Sitemap
+Sitemap: https://meine-putzhilfe.de/sitemap.xml
+# robots.txt for Meine Putzhilfe
 User-agent: *
 Allow: /
 Disallow: /admin

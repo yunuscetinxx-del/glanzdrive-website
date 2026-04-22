@@ -7,9 +7,35 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-console.log('Starting GlanzDrive. PORT:', PORT, 'NODE:', process.version);
+console.log('Starting Meine Putzhilfe. PORT:', PORT, 'NODE:', process.version);
+
+// ---- Multi-domain config ----
+const PRIMARY_DOMAIN = 'meine-putzhilfe.de';
+const REDIRECT_DOMAINS = {
+  'putzretter.de': 'putzretter',
+  'glanzretter.de': 'glanzretter',
+  'putzkonig.de': 'putzkonig',
+  'glanzkonig.de': 'glanzkonig',
+  'glanzstar.de': 'glanzstar',
+  'putzhof.de': 'putzhof',
+  'putzheim.de': 'putzheim',
+  'putzcity.de': 'putzcity',
+  'glanzcity.de': 'glanzcity',
+  'glanzland.de': 'glanzland',
+};
 
 app.disable('x-powered-by');
+
+// Multi-domain 301 redirect with UTM tracking (must be FIRST middleware)
+app.use((req, res, next) => {
+  const host = (req.headers.host || '').toLowerCase().replace(/^www\./, '').split(':')[0];
+  if (REDIRECT_DOMAINS[host]) {
+    const utm = REDIRECT_DOMAINS[host];
+    return res.redirect(301, `https://${PRIMARY_DOMAIN}${req.originalUrl}${req.originalUrl.includes('?') ? '&' : '?'}utm_source=${utm}&utm_medium=domain&utm_campaign=brand_test`);
+  }
+  next();
+});
+
 app.use((req, res, next) => {
   res.setHeader('X-Content-Type-Options', 'nosniff');
   res.setHeader('X-Frame-Options', 'SAMEORIGIN');
@@ -87,4 +113,4 @@ app.use((err, req, res, next) => {
 process.on('uncaughtException', e => console.error('[uncaught]', e));
 process.on('unhandledRejection', e => console.error('[unhandled]', e));
 
-app.listen(PORT, '0.0.0.0', () => console.log('GlanzDrive listening on 0.0.0.0:' + PORT));
+app.listen(PORT, '0.0.0.0', () => console.log('Meine Putzhilfe listening on 0.0.0.0:' + PORT));

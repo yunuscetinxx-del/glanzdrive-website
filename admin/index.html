@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<title>Admin Dashboard — GlanzDrive</title>
+<title>Admin Dashboard — Meine Putzhilfe</title>
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <style>
   *{box-sizing:border-box;margin:0;padding:0}
@@ -122,10 +122,10 @@
 <div id="loginView" class="login-wrap">
   <form id="loginForm" class="login-card" autocomplete="off">
     <div class="logo">
-      <img src="/images/logo/logo-brand.png" alt="GlanzDrive">
+      <img src="/images/logo/logo-brand.png" alt="Meine Putzhilfe">
       <div>
         <h1>Admin Dashboard</h1>
-        <p class="sub">GlanzDrive Cleaning Services</p>
+        <p class="sub">Meine Putzhilfe</p>
       </div>
     </div>
     <div id="loginErr" class="err"></div>
@@ -148,7 +148,7 @@
     <div class="brand">
       <img src="/images/logo/logo-brand.png" alt="">
       <div>
-        <div class="name">GlanzDrive</div>
+        <div class="name">Meine Putzhilfe</div>
         <div style="font-size:0.7rem;color:#7d9097">Admin Panel</div>
       </div>
     </div>
@@ -342,7 +342,7 @@ window.select=function(id){
   const wa=$('#waReplyLink');
   if(m.phone){
     const num=m.phone.replace(/[^0-9]/g,'');
-    wa.href=`https://wa.me/${num}?text=${encodeURIComponent('Hello '+m.name+', regarding your inquiry on GlanzDrive — ')}`;
+    wa.href=`https://wa.me/${num}?text=${encodeURIComponent('Hello '+m.name+', regarding your inquiry on Meine Putzhilfe — ')}`;
     wa.style.display='inline-block';
   }else wa.style.display='none';
   // Replies

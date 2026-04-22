@@ -1,4 +1,4 @@
-# GlanzDrive — Setup Guide
+# Meine Putzhilfe — Setup Guide
 
 ## 🔐 Environment Variables (Vercel Dashboard → Settings → Environment Variables)
 
@@ -29,7 +29,7 @@
 ### Update site config (in `js/site-bundle.js` line 5):
 
 ```js
-const GLANZDRIVE_CONFIG = {
+const MPH_CONFIG = {
   whatsappNumber: '491234567890', // ← REPLACE: international format, no +
   ga4Id: '',                       // ← Add 'G-XXXXXXXXXX' for analytics
   trustpilotBusinessUnit: '',      // ← Add Trustpilot ID
