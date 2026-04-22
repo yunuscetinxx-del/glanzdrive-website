@@ -1,7 +1,5 @@
 // GlanzDrive — Express server for Hostinger Node.js hosting
-// Serves static site + wraps Vercel-style API handlers
 import express from 'express';
-import compression from 'compression';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import fs from 'node:fs';
@@ -10,7 +8,16 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// ---------- Security headers (replaces vercel.json) ----------
+// Optional compression (skip if not installed)
+try {
+  const { default: compression } = await import('compression');
+  app.use(compression());
+  console.log('✅ compression enabled');
+} catch (e) {
+  console.log('ℹ️  compression not available, skipping');
+}
+
+// ---------- Security headers ----------
 app.disable('x-powered-by');
 app.use((req, res, next) => {
   res.setHeader('Strict-Transport-Security', 'max-age=63072000; includeSubDomains; preload');
@@ -29,11 +36,9 @@ app.use((req, res, next) => {
     "frame-src https://widget.trustpilot.com https://wa.me; " +
     "base-uri 'self'; form-action 'self';"
   );
-  // Block bad paths
   if (/^\/(wp-admin|wp-login\.php|admin\.php|\.env|\.git)/i.test(req.path)) {
     return res.redirect(302, '/');
   }
-  // No-cache for admin & api
   if (req.path.startsWith('/admin') || req.path.startsWith('/api')) {
     res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
     res.setHeader('X-Robots-Tag', 'noindex, nofollow');
@@ -41,42 +46,41 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(compression());
-
-// ---------- Wrap Vercel-style API handlers as Express routes ----------
-// Vercel handlers: export default async function (req, res) {}
-// Need to add res.status() shim and parse body manually (handlers use readBody)
-async function loadHandler(file) {
+// ---------- Lazy API handler loader ----------
+const handlerCache = new Map();
+async function getHandler(file) {
+  if (handlerCache.has(file)) return handlerCache.get(file);
   const url = pathToFileURL(path.join(__dirname, 'api', file)).href;
   const mod = await import(url);
+  handlerCache.set(file, mod.default);
   return mod.default;
 }
 
-function adapt(handler) {
-  return async (req, res) => {
-    // Add Vercel-like helpers if missing
-    if (!res.status) res.status = (c) => { res.statusCode = c; return res; };
+function apiRoute(method, route, file) {
+  app[method.toLowerCase()](route, async (req, res) => {
     try {
+      if (!res.status) res.status = (c) => { res.statusCode = c; return res; };
+      const handler = await getHandler(file);
       await handler(req, res);
     } catch (err) {
-      console.error('API error:', err);
-      if (!res.headersSent) res.status(500).json({ error: 'Server error' });
+      console.error(`[API ${route}]`, err);
+      if (!res.headersSent) {
+        res.statusCode = 500;
+        res.setHeader('Content-Type', 'application/json');
+        res.end(JSON.stringify({ error: 'Server error' }));
+      }
     }
-  };
+  });
 }
 
-const apiRoutes = [
-  ['POST', '/api/quote', 'quote.js'],
-  ['POST', '/api/login', 'login.js'],
-  ['GET',  '/api/messages', 'messages.js'],
-  ['POST', '/api/reply', 'reply.js'],
-  ['POST', '/api/chat', 'chat.js'],
-];
+apiRoute('POST', '/api/quote', 'quote.js');
+apiRoute('POST', '/api/login', 'login.js');
+apiRoute('GET',  '/api/messages', 'messages.js');
+apiRoute('POST', '/api/reply', 'reply.js');
+apiRoute('POST', '/api/chat', 'chat.js');
 
-for (const [method, route, file] of apiRoutes) {
-  const handler = await loadHandler(file);
-  app[method.toLowerCase()](route, adapt(handler));
-}
+// Health check for Hostinger
+app.get('/api/health', (req, res) => res.json({ ok: true, ts: Date.now() }));
 
 // ---------- Clean URLs (folder/index.html) ----------
 app.use((req, res, next) => {
@@ -103,6 +107,15 @@ app.use((req, res) => {
   if (fs.existsSync(notFound)) return res.status(404).sendFile(notFound);
   res.status(404).send('Not Found');
 });
+
+// ---------- Error handler ----------
+app.use((err, req, res, next) => {
+  console.error('[Express error]', err);
+  if (!res.headersSent) res.status(500).send('Server error');
+});
+
+process.on('uncaughtException', (e) => console.error('[uncaught]', e));
+process.on('unhandledRejection', (e) => console.error('[unhandled]', e));
 
 app.listen(PORT, () => {
   console.log(`✅ GlanzDrive running on port ${PORT}`);
