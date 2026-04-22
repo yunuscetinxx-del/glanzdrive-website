@@ -1,10 +1,10 @@
-// === Meine Putzhilfe i18n + SEO ===
+﻿// === Meine Putzhilfe i18n + SEO ===
 // Auto-detects browser language, supports ?lang=de URL param, persists to localStorage
 // Translates body text, attributes, <title>, meta description; injects hreflang/og:locale SEO tags
 const TRANSLATIONS = {
   // Navigation
   "Home": "Startseite",
-  "About us": "Über uns",
+  "About us": "Ãœber uns",
   "Services": "Dienstleistungen",
   "Contact us": "Kontakt",
   "Docs": "Dokumente",
@@ -13,69 +13,69 @@ const TRANSLATIONS = {
 
   // Banner
   "Meine Putzhilfe Reinigung": "Meine Putzhilfe Reinigung",
-  "Trusted Residential Cleaning Services": "Vertrauenswürdige Reinigungsdienste für Ihr Zuhause",
-  "Enjoy a pristine home with our expert cleaning services. Book now for a cleaner, fresher living space.": "Genießen Sie ein makelloses Zuhause mit unseren professionellen Reinigungsdiensten. Buchen Sie jetzt für ein saubereres, frischeres Wohnambiente.",
+  "Trusted Residential Cleaning Services": "VertrauenswÃ¼rdige Reinigungsdienste fÃ¼r Ihr Zuhause",
+  "Enjoy a pristine home with our expert cleaning services. Book now for a cleaner, fresher living space.": "GenieÃŸen Sie ein makelloses Zuhause mit unseren professionellen Reinigungsdiensten. Buchen Sie jetzt fÃ¼r ein saubereres, frischeres Wohnambiente.",
 
   // Quote form
   "Get a free quote": "Kostenloses Angebot anfordern",
-  "Full name *": "Vollständiger Name *",
+  "Full name *": "VollstÃ¤ndiger Name *",
   "Phone number *": "Telefonnummer *",
   "Email address *": "E-Mail-Adresse *",
   "Service options *": "Serviceoptionen *",
-  "Regular Cleaning": "Regelmäßige Reinigung",
+  "Regular Cleaning": "RegelmÃ¤ÃŸige Reinigung",
   "Deep Cleaning": "Grundreinigung",
   "Move-in / Move-out": "Ein-/Auszugsreinigung",
   "Removal & Storage": "Umzug & Lagerung",
-  "Eco Cleaning": "Öko-Reinigung",
+  "Eco Cleaning": "Ã–ko-Reinigung",
   "Renovation Cleaning": "Renovierungsreinigung",
   "Get started today": "Jetzt starten",
 
   // Marquee
-  "Special discounts available for recurring cleaning services!": "Sonderrabatte für regelmäßige Reinigungsdienste!",
-  "Free estimates! Contact us today to schedule your cleaning!": "Kostenlose Schätzungen! Kontaktieren Sie uns noch heute!",
-  "Eco-friendly products for a healthier home environment!": "Umweltfreundliche Produkte für ein gesünderes Zuhause!",
+  "Special discounts available for recurring cleaning services!": "Sonderrabatte fÃ¼r regelmÃ¤ÃŸige Reinigungsdienste!",
+  "Free estimates! Contact us today to schedule your cleaning!": "Kostenlose SchÃ¤tzungen! Kontaktieren Sie uns noch heute!",
+  "Eco-friendly products for a healthier home environment!": "Umweltfreundliche Produkte fÃ¼r ein gesÃ¼nderes Zuhause!",
   "Book now and get 10% off your first cleaning service!": "Jetzt buchen und 10% Rabatt auf Ihre erste Reinigung!",
   "Explore our efficient cleaning services designed!": "Entdecken Sie unsere effizienten Reinigungsdienste!",
 
   // Services section
-  "Your home, our priority": "Ihr Zuhause, unsere Priorität",
+  "Your home, our priority": "Ihr Zuhause, unsere PrioritÃ¤t",
   "Our Professional Cleaning Services": "Unsere professionellen Reinigungsdienste",
-  "Explore our efficient cleaning services designed to maintain a neat and tidy home environment.": "Entdecken Sie unsere effizienten Reinigungsdienste, die für ein sauberes und ordentliches Zuhause sorgen.",
+  "Explore our efficient cleaning services designed to maintain a neat and tidy home environment.": "Entdecken Sie unsere effizienten Reinigungsdienste, die fÃ¼r ein sauberes und ordentliches Zuhause sorgen.",
   "View all services": "Alle Dienstleistungen anzeigen",
 
   // Cleaning highlights
-  "Let us make your home shine & spotless": "Lassen Sie Ihr Zuhause glänzen und makellos erstrahlen",
-  "The desks are polished and dust-free, the carpets are fresh and spotless.": "Die Oberflächen sind poliert und staubfrei, die Teppiche sind frisch und makellos.",
-  "Cleaning for allergy relief": "Reinigung für Allergiker",
-  "Residential deep cleaning": "Gründliche Wohnungsreinigung",
+  "Let us make your home shine & spotless": "Lassen Sie Ihr Zuhause glÃ¤nzen und makellos erstrahlen",
+  "The desks are polished and dust-free, the carpets are fresh and spotless.": "Die OberflÃ¤chen sind poliert und staubfrei, die Teppiche sind frisch und makellos.",
+  "Cleaning for allergy relief": "Reinigung fÃ¼r Allergiker",
+  "Residential deep cleaning": "GrÃ¼ndliche Wohnungsreinigung",
   "Seasonal cleaning": "Saisonale Reinigung",
-  "Customized cleaning plans": "Individuelle Reinigungspläne",
+  "Customized cleaning plans": "Individuelle ReinigungsplÃ¤ne",
   "Contact Us": "Kontaktieren Sie uns",
 
   // Why choose us
-  "Why choose us?": "Warum uns wählen?",
-  "Exceptional service every time": "Erstklassiger Service – jedes Mal",
-  "Our team is highly trained and experienced, ensuring thorough and professional cleaning every time.": "Unser Team ist bestens geschult und erfahren und sorgt jedes Mal für eine gründliche und professionelle Reinigung.",
-  "We offer tailored cleaning plans to meet your specific needs.": "Wir bieten maßgeschneiderte Reinigungspläne, die Ihren speziellen Bedürfnissen entsprechen.",
-  "We use eco-friendly cleaning products that are safe for your family and pets.": "Wir verwenden umweltfreundliche Reinigungsprodukte, die für Ihre Familie und Haustiere sicher sind.",
+  "Why choose us?": "Warum uns wÃ¤hlen?",
+  "Exceptional service every time": "Erstklassiger Service â€“ jedes Mal",
+  "Our team is highly trained and experienced, ensuring thorough and professional cleaning every time.": "Unser Team ist bestens geschult und erfahren und sorgt jedes Mal fÃ¼r eine grÃ¼ndliche und professionelle Reinigung.",
+  "We offer tailored cleaning plans to meet your specific needs.": "Wir bieten maÃŸgeschneiderte ReinigungsplÃ¤ne, die Ihren speziellen BedÃ¼rfnissen entsprechen.",
+  "We use eco-friendly cleaning products that are safe for your family and pets.": "Wir verwenden umweltfreundliche Reinigungsprodukte, die fÃ¼r Ihre Familie und Haustiere sicher sind.",
   "We provide flexible scheduling to fit your busy lifestyle.": "Wir bieten flexible Terminplanung, die zu Ihrem vollen Terminkalender passt.",
-  "Our satisfaction guarantee ensures you'll be happy with our service, or we'll make it right.": "Unsere Zufriedenheitsgarantie stellt sicher, dass Sie mit unserem Service zufrieden sind – oder wir machen es richtig.",
+  "Our satisfaction guarantee ensures you'll be happy with our service, or we'll make it right.": "Unsere Zufriedenheitsgarantie stellt sicher, dass Sie mit unserem Service zufrieden sind â€“ oder wir machen es richtig.",
 
   // Testimonials
   "What our clients say": "Was unsere Kunden sagen",
   "Feedback from satisfied customers.": "Feedback zufriedener Kunden.",
-  "Gain insight into how our cleaning services have transformed homes and exceeded expectations.": "Erfahren Sie, wie unsere Reinigungsdienste Häuser verwandelt und Erwartungen übertroffen haben.",
-  "\"Meine Putzhilfe transformed my home! Highly recommend their attention to detail.\"": "\"Meine Putzhilfe hat mein Zuhause verwandelt! Ich empfehle ihre Liebe zum Detail wärmstens.\"",
-  "I'm consistently impressed by the professionalism and thoroughness of Meine Putzhilfe's team. My house has never looked better!": "Ich bin immer wieder beeindruckt von der Professionalität und Gründlichkeit des Meine Putzhilfe-Teams. Mein Haus sah noch nie so gut aus!",
-  "I appreciate the flexibility and reliability of Meine Putzhilfe's services. They always go above and beyond to exceed my expectations!": "Ich schätze die Flexibilität und Zuverlässigkeit der Meine Putzhilfe-Dienste. Sie übertreffen stets meine Erwartungen!",
+  "Gain insight into how our cleaning services have transformed homes and exceeded expectations.": "Erfahren Sie, wie unsere Reinigungsdienste HÃ¤user verwandelt und Erwartungen Ã¼bertroffen haben.",
+  "\"Meine Putzhilfe transformed my home! Highly recommend their attention to detail.\"": "\"Meine Putzhilfe hat mein Zuhause verwandelt! Ich empfehle ihre Liebe zum Detail wÃ¤rmstens.\"",
+  "I'm consistently impressed by the professionalism and thoroughness of Meine Putzhilfe's team. My house has never looked better!": "Ich bin immer wieder beeindruckt von der ProfessionalitÃ¤t und GrÃ¼ndlichkeit des Meine Putzhilfe-Teams. Mein Haus sah noch nie so gut aus!",
+  "I appreciate the flexibility and reliability of Meine Putzhilfe's services. They always go above and beyond to exceed my expectations!": "Ich schÃ¤tze die FlexibilitÃ¤t und ZuverlÃ¤ssigkeit der Meine Putzhilfe-Dienste. Sie Ã¼bertreffen stets meine Erwartungen!",
 
   // Pricing
   "Transparent pricing": "Transparente Preise",
-  "Budget-friendly options for a cleaner home": "Budgetfreundliche Optionen für ein sauberes Zuhause",
+  "Budget-friendly options for a cleaner home": "Budgetfreundliche Optionen fÃ¼r ein sauberes Zuhause",
   "Essential cleaning to keep your home fresh, tidy, and inviting.": "Grundreinigung, um Ihr Zuhause frisch, ordentlich und einladend zu halten.",
-  "Thorough cleaning for a spotless, sparkling home.": "Gründliche Reinigung für ein makelloses, glänzendes Zuhause.",
-  "Consistent cleaning to maintain a pristine, comfortable home.": "Regelmäßige Reinigung für ein makelloses, komfortables Zuhause.",
-  "Comprehensive cleaning for special occasions and seasonal refreshes.": "Umfassende Reinigung für besondere Anlässe und saisonale Auffrischung.",
+  "Thorough cleaning for a spotless, sparkling home.": "GrÃ¼ndliche Reinigung fÃ¼r ein makelloses, glÃ¤nzendes Zuhause.",
+  "Consistent cleaning to maintain a pristine, comfortable home.": "RegelmÃ¤ÃŸige Reinigung fÃ¼r ein makelloses, komfortables Zuhause.",
+  "Comprehensive cleaning for special occasions and seasonal refreshes.": "Umfassende Reinigung fÃ¼r besondere AnlÃ¤sse und saisonale Auffrischung.",
   "Book a services": "Service buchen",
 
   // Our work
@@ -85,22 +85,22 @@ const TRANSLATIONS = {
   // Stats
   "People who have started cleaning": "Menschen, die mit der Reinigung begonnen haben",
   "cleaning": "Reinigung",
-  "Cleaning services in England cater to a wide range of needs from residential.": "Reinigungsdienste decken ein breites Spektrum an Bedürfnissen im Wohnbereich ab.",
+  "Cleaning services in England cater to a wide range of needs from residential.": "Reinigungsdienste decken ein breites Spektrum an BedÃ¼rfnissen im Wohnbereich ab.",
 
   // Footer
   "Stay updated with the latest news, promotions, and exclusive offers.": "Bleiben Sie auf dem Laufenden mit den neuesten Nachrichten, Aktionen und exklusiven Angeboten.",
   "Enter your email": "E-Mail eingeben",
   "Subscribe": "Abonnieren",
-  "By subscribing, you agree to receive our promotional emails. You can unsubscribe at any time.": "Mit dem Abonnement stimmen Sie dem Erhalt unserer Werbe-E-Mails zu. Sie können sich jederzeit abmelden.",
-  "A cleaner home is just a call away - start your journey today.": "Ein sauberes Zuhause ist nur einen Anruf entfernt – starten Sie noch heute.",
-  "Pricing plans": "Preispläne",
+  "By subscribing, you agree to receive our promotional emails. You can unsubscribe at any time.": "Mit dem Abonnement stimmen Sie dem Erhalt unserer Werbe-E-Mails zu. Sie kÃ¶nnen sich jederzeit abmelden.",
+  "A cleaner home is just a call away - start your journey today.": "Ein sauberes Zuhause ist nur einen Anruf entfernt â€“ starten Sie noch heute.",
+  "Pricing plans": "PreisplÃ¤ne",
   "404 Page": "404 Seite",
   "Terms of service": "Nutzungsbedingungen",
   "Privacy policy": "Datenschutzrichtlinie",
   "Get a quote": "Angebot anfordern",
 
   // Misc
-  "About Us": "Über uns",
+  "About Us": "Ãœber uns",
   "Who we are": "Wer wir sind",
   "All Services": "Alle Dienstleistungen",
   "Get in Touch": "Kontakt aufnehmen",
@@ -108,27 +108,27 @@ const TRANSLATIONS = {
   "Read more": "Weiterlesen",
   "Submit": "Absenden",
   "Send": "Senden",
-  "Close": "Schließen",
-  "Open": "Öffnen",
-  "Back": "Zurück",
+  "Close": "SchlieÃŸen",
+  "Open": "Ã–ffnen",
+  "Back": "ZurÃ¼ck",
   "Next": "Weiter",
-  "Previous": "Zurück",
+  "Previous": "ZurÃ¼ck",
 };
 
 // Page-level SEO translations
 const SEO_TITLES = {
-  "Meine Putzhilfe": "Meine Putzhilfe – Professionelle Reinigungsdienste",
-  "About us | Meine Putzhilfe": "Über uns | Meine Putzhilfe",
+  "Meine Putzhilfe": "Meine Putzhilfe â€“ Professionelle Reinigungsdienste",
+  "About us | Meine Putzhilfe": "Ãœber uns | Meine Putzhilfe",
   "Services | Meine Putzhilfe": "Dienstleistungen | Meine Putzhilfe",
   "Services detail | Meine Putzhilfe": "Service-Details | Meine Putzhilfe",
   "Contact us | Meine Putzhilfe": "Kontakt | Meine Putzhilfe",
-  "Documentation — Meine Putzhilfe": "Dokumentation — Meine Putzhilfe Reinigungsdienste",
+  "Documentation â€” Meine Putzhilfe": "Dokumentation â€” Meine Putzhilfe Reinigungsdienste",
   "Privacy-Policy | Meine Putzhilfe": "Datenschutzrichtlinie | Meine Putzhilfe",
   "Terms & Condition | Meine Putzhilfe": "Nutzungsbedingungen | Meine Putzhilfe",
 };
 
 const SEO_DESCRIPTIONS = {
-  "Meine Putzhilfe - homepage": "Meine Putzhilfe – Vertrauenswürdige Reinigungsdienste für Ihr Zuhause. Regelmäßige Reinigung, Grundreinigung, Ein-/Auszugsreinigung und mehr. Jetzt kostenloses Angebot anfordern.",
+  "Meine Putzhilfe - homepage": "Meine Putzhilfe â€“ VertrauenswÃ¼rdige Reinigungsdienste fÃ¼r Ihr Zuhause. RegelmÃ¤ÃŸige Reinigung, Grundreinigung, Ein-/Auszugsreinigung und mehr. Jetzt kostenloses Angebot anfordern.",
 };
 
 (function () {
@@ -304,203 +304,4 @@ const SEO_DESCRIPTIONS = {
   } else {
     init();
   }
-})();
-const TRANSLATIONS = {
-  // Navigation
-  "Home": "Startseite",
-  "About us": "Über uns",
-  "Services": "Dienstleistungen",
-  "Contact us": "Kontakt",
-  "Docs": "Dokumente",
-  "Book a service": "Service buchen",
-
-  // Banner
-  "Meine Putzhilfe Reinigung": "Meine Putzhilfe Reinigung",
-  "Trusted Residential Cleaning Services": "Vertrauenswürdige Reinigungsdienste für Ihr Zuhause",
-  "Enjoy a pristine home with our expert cleaning services. Book now for a cleaner, fresher living space.": "Genießen Sie ein makelloses Zuhause mit unseren professionellen Reinigungsdiensten. Buchen Sie jetzt für ein saubereres, frischeres Wohnambiente.",
-
-  // Quote form
-  "Get a free quote": "Kostenloses Angebot anfordern",
-  "Full name *": "Vollständiger Name *",
-  "Phone number *": "Telefonnummer *",
-  "Email address *": "E-Mail-Adresse *",
-  "Service options *": "Serviceoptionen *",
-  "Regular Cleaning": "Regelmäßige Reinigung",
-  "Deep Cleaning": "Grundreinigung",
-  "Move-in / Move-out": "Ein-/Auszugsreinigung",
-  "Removal & Storage": "Umzug & Lagerung",
-  "Eco Cleaning": "Öko-Reinigung",
-  "Renovation Cleaning": "Renovierungsreinigung",
-  "Get started today": "Jetzt starten",
-
-  // Marquee
-  "Special discounts available for recurring cleaning services!": "Sonderrabatte für regelmäßige Reinigungsdienste!",
-  "Free estimates! Contact us today to schedule your cleaning!": "Kostenlose Schätzungen! Kontaktieren Sie uns noch heute!",
-  "Eco-friendly products for a healthier home environment!": "Umweltfreundliche Produkte für ein gesünderes Zuhause!",
-  "Book now and get 10% off your first cleaning service!": "Jetzt buchen und 10% Rabatt auf Ihre erste Reinigung!",
-  "Explore our efficient cleaning services designed!": "Entdecken Sie unsere effizienten Reinigungsdienste!",
-
-  // Services section
-  "Your home, our priority": "Ihr Zuhause, unsere Priorität",
-  "Our Professional Cleaning Services": "Unsere professionellen Reinigungsdienste",
-  "Explore our efficient cleaning services designed to maintain a neat and tidy home environment.": "Entdecken Sie unsere effizienten Reinigungsdienste, die für ein sauberes und ordentliches Zuhause sorgen.",
-  "View all services": "Alle Dienstleistungen anzeigen",
-
-  // Cleaning highlights
-  "Let us make your home shine & spotless": "Lassen Sie Ihr Zuhause glänzen und makellos erstrahlen",
-  "The desks are polished and dust-free, the carpets are fresh and spotless.": "Die Oberflächen sind poliert und staubfrei, die Teppiche sind frisch und makellos.",
-  "Cleaning for allergy relief": "Reinigung für Allergiker",
-  "Residential deep cleaning": "Gründliche Wohnungsreinigung",
-  "Seasonal cleaning": "Saisonale Reinigung",
-  "Customized cleaning plans": "Individuelle Reinigungspläne",
-  "Contact Us": "Kontaktieren Sie uns",
-
-  // Why choose us
-  "Why choose us?": "Warum uns wählen?",
-  "Exceptional service every time": "Erstklassiger Service – jedes Mal",
-  "Our team is highly trained and experienced, ensuring thorough and professional cleaning every time.": "Unser Team ist bestens geschult und erfahren und sorgt jedes Mal für eine gründliche und professionelle Reinigung.",
-  "We offer tailored cleaning plans to meet your specific needs.": "Wir bieten maßgeschneiderte Reinigungspläne, die Ihren speziellen Bedürfnissen entsprechen.",
-  "We use eco-friendly cleaning products that are safe for your family and pets.": "Wir verwenden umweltfreundliche Reinigungsprodukte, die für Ihre Familie und Haustiere sicher sind.",
-  "We provide flexible scheduling to fit your busy lifestyle.": "Wir bieten flexible Terminplanung, die zu Ihrem vollen Terminkalender passt.",
-  "Our satisfaction guarantee ensures you'll be happy with our service, or we'll make it right.": "Unsere Zufriedenheitsgarantie stellt sicher, dass Sie mit unserem Service zufrieden sind – oder wir machen es richtig.",
-
-  // Testimonials
-  "What our clients say": "Was unsere Kunden sagen",
-  "Feedback from satisfied customers.": "Feedback zufriedener Kunden.",
-  "Gain insight into how our cleaning services have transformed homes and exceeded expectations.": "Erfahren Sie, wie unsere Reinigungsdienste Häuser verwandelt und Erwartungen übertroffen haben.",
-  "\"Meine Putzhilfe transformed my home! Highly recommend their attention to detail.\"": "\"Meine Putzhilfe hat mein Zuhause verwandelt! Ich empfehle ihre Liebe zum Detail wärmstens.\"",
-  "I'm consistently impressed by the professionalism and thoroughness of Meine Putzhilfe's team. My house has never looked better!": "Ich bin immer wieder beeindruckt von der Professionalität und Gründlichkeit des Meine Putzhilfe-Teams. Mein Haus sah noch nie so gut aus!",
-  "I appreciate the flexibility and reliability of Meine Putzhilfe's services. They always go above and beyond to exceed my expectations!": "Ich schätze die Flexibilität und Zuverlässigkeit der Meine Putzhilfe-Dienste. Sie übertreffen stets meine Erwartungen!",
-
-  // Pricing
-  "Transparent pricing": "Transparente Preise",
-  "Budget-friendly options for a cleaner home": "Budgetfreundliche Optionen für ein sauberes Zuhause",
-  "Essential cleaning to keep your home fresh, tidy, and inviting.": "Grundreinigung, um Ihr Zuhause frisch, ordentlich und einladend zu halten.",
-  "Thorough cleaning for a spotless, sparkling home.": "Gründliche Reinigung für ein makelloses, glänzendes Zuhause.",
-  "Consistent cleaning to maintain a pristine, comfortable home.": "Regelmäßige Reinigung für ein makelloses, komfortables Zuhause.",
-  "Comprehensive cleaning for special occasions and seasonal refreshes.": "Umfassende Reinigung für besondere Anlässe und saisonale Auffrischung.",
-  "Book a services": "Service buchen",
-
-  // Our work
-  "Our work in action": "Unsere Arbeit in Aktion",
-  "See the difference we make": "Sehen Sie den Unterschied",
-
-  // Stats
-  "People who have started cleaning": "Menschen, die mit der Reinigung begonnen haben",
-  "Cleaning services in England cater to a wide range of needs from residential.": "Reinigungsdienste decken ein breites Spektrum an Bedürfnissen im Wohnbereich ab.",
-
-  // Footer
-  "Stay updated with the latest news, promotions, and exclusive offers.": "Bleiben Sie auf dem Laufenden mit den neuesten Nachrichten, Aktionen und exklusiven Angeboten.",
-  "Enter your email": "E-Mail eingeben",
-  "Subscribe": "Abonnieren",
-  "By subscribing, you agree to receive our promotional emails. You can unsubscribe at any time.": "Mit dem Abonnement stimmen Sie dem Erhalt unserer Werbe-E-Mails zu. Sie können sich jederzeit abmelden.",
-  "A cleaner home is just a call away - start your journey today.": "Ein sauberes Zuhause ist nur einen Anruf entfernt – starten Sie noch heute.",
-  "Contact us": "Kontakt",
-  "Pricing plans": "Preispläne",
-  "404 Page": "404 Seite",
-  "Terms of service": "Nutzungsbedingungen",
-  "Privacy policy": "Datenschutzrichtlinie",
-
-  // About page
-  "About Us": "Über uns",
-  "Who we are": "Wer wir sind",
-
-  // Services page
-  "All Services": "Alle Dienstleistungen",
-
-  // Contact page  
-  "Get in Touch": "Kontakt aufnehmen",
-
-  // Generic
-  "Learn more": "Mehr erfahren",
-  "Read more": "Weiterlesen",
-  "Submit": "Absenden",
-  "Send": "Senden",
-  "Close": "Schließen",
-  "Open": "Öffnen",
-  "Back": "Zurück",
-  "Next": "Weiter",
-  "Previous": "Zurück",
-};
-
-(function() {
-  const LANG_KEY = 'meine-putzhilfe-lang';
-
-  function getStoredLang() {
-    return localStorage.getItem(LANG_KEY) || 'en';
-  }
-
-  function setStoredLang(lang) {
-    localStorage.setItem(LANG_KEY, lang);
-  }
-
-  // Build reverse map (de -> en)
-  const REVERSE = {};
-  for (const [en, de] of Object.entries(TRANSLATIONS)) {
-    REVERSE[de] = en;
-  }
-
-  function translateNode(node, lang) {
-    if (node.nodeType === Node.TEXT_NODE) {
-      const text = node.textContent.trim();
-      if (!text) return;
-      if (lang === 'de') {
-        if (TRANSLATIONS[text]) {
-          node._originalText = node._originalText || node.textContent;
-          node.textContent = node.textContent.replace(text, TRANSLATIONS[text]);
-        }
-      } else {
-        if (node._originalText) {
-          node.textContent = node._originalText;
-        } else if (REVERSE[text]) {
-          node.textContent = node.textContent.replace(text, REVERSE[text]);
-        }
-      }
-      return;
-    }
-    if (node.nodeType !== Node.ELEMENT_NODE) return;
-    // Handle placeholders
-    if (node.placeholder) {
-      const ph = node.placeholder.trim();
-      if (lang === 'de' && TRANSLATIONS[ph]) {
-        node._originalPh = node._originalPh || node.placeholder;
-        node.placeholder = TRANSLATIONS[ph];
-      } else if (lang === 'en' && node._originalPh) {
-        node.placeholder = node._originalPh;
-      }
-    }
-    for (let child of node.childNodes) {
-      translateNode(child, lang);
-    }
-  }
-
-  function applyLang(lang) {
-    document.documentElement.lang = lang === 'de' ? 'de' : 'en';
-    translateNode(document.body, lang);
-    // Update toggle buttons
-    document.querySelectorAll('.lang-toggle-btn').forEach(btn => {
-      btn.textContent = lang === 'de' ? 'EN' : 'DE';
-      btn.title = lang === 'de' ? 'Switch to English' : 'Auf Deutsch wechseln';
-    });
-  }
-
-  function toggleLang() {
-    const current = getStoredLang();
-    const next = current === 'en' ? 'de' : 'en';
-    setStoredLang(next);
-    applyLang(next);
-  }
-
-  // Expose globally
-  window.toggleLang = toggleLang;
-  window.applyLang = applyLang;
-  window.getStoredLang = getStoredLang;
-
-  // Auto-apply on load
-  document.addEventListener('DOMContentLoaded', function() {
-    const lang = getStoredLang();
-    if (lang === 'de') {
-      applyLang('de');
-    }
-  });
 })();
