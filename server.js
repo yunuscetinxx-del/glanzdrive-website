@@ -8,15 +8,6 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Optional compression (skip if not installed)
-try {
-  const { default: compression } = await import('compression');
-  app.use(compression());
-  console.log('✅ compression enabled');
-} catch (e) {
-  console.log('ℹ️  compression not available, skipping');
-}
-
 // ---------- Security headers ----------
 app.disable('x-powered-by');
 app.use((req, res, next) => {
@@ -75,7 +66,7 @@ function apiRoute(method, route, file) {
 
 apiRoute('POST', '/api/quote', 'quote.js');
 apiRoute('POST', '/api/login', 'login.js');
-apiRoute('GET',  '/api/messages', 'messages.js');
+apiRoute('GET', '/api/messages', 'messages.js');
 apiRoute('POST', '/api/reply', 'reply.js');
 apiRoute('POST', '/api/chat', 'chat.js');
 
@@ -117,6 +108,14 @@ app.use((err, req, res, next) => {
 process.on('uncaughtException', (e) => console.error('[uncaught]', e));
 process.on('unhandledRejection', (e) => console.error('[unhandled]', e));
 
+// Optional compression
+import('compression').then(({ default: compression }) => {
+  app.use(compression());
+  console.log('compression enabled');
+}).catch(() => {
+  console.log('compression not available, skipping');
+});
+
 app.listen(PORT, () => {
-  console.log(`✅ GlanzDrive running on port ${PORT}`);
+  console.log(`GlanzDrive running on port ${PORT}`);
 });
