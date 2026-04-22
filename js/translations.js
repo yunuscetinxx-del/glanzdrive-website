@@ -144,11 +144,14 @@ const SEO_DESCRIPTIONS = {
       const p = new URL(window.location.href).searchParams.get('lang');
       if (p && SUPPORTED.includes(p)) return p;
     } catch (e) {}
-    const stored = localStorage.getItem(LANG_KEY);
-    if (stored && SUPPORTED.includes(stored)) return stored;
-    const nav = (navigator.language || navigator.userLanguage || 'de').toLowerCase();
-    // Default to German (primary market). Only English for explicit en-* browsers.
-    if (nav.startsWith('en')) return 'en';
+    // Only honor stored lang if user explicitly toggled (we mark with version flag)
+    try {
+      const stored = localStorage.getItem(LANG_KEY);
+      const userSet = localStorage.getItem(LANG_KEY + '-user');
+      if (stored && userSet === '1' && SUPPORTED.includes(stored)) return stored;
+    } catch (e) {}
+    // Default = German (primary market). Browser-language detection disabled
+    // because the site is German-first; English visitors can switch via the toggle.
     return 'de';
   }
 
@@ -236,27 +239,58 @@ const SEO_DESCRIPTIONS = {
     }
   }
 
-  function injectFloatingToggle() {
-    if (document.getElementById('lang-floating-toggle')) return;
+  function injectNavToggle() {
+    if (document.getElementById('mph-lang-btn')) return;
     const btn = document.createElement('button');
-    btn.id = 'lang-floating-toggle';
+    btn.id = 'mph-lang-btn';
     btn.className = 'lang-toggle-btn';
     btn.type = 'button';
     btn.onclick = toggleLang;
+    // Position: desktop = top-right inside header strip (not floating over content);
+    // mobile = bottom-left small (away from WhatsApp bottom-right + chat widget)
     btn.style.cssText = [
-      'position:fixed', 'top:14px', 'right:14px', 'z-index:10000',
-      'padding:8px 14px', 'border-radius:999px',
-      'background:#72deff', 'color:#1f2a2e',
-      'border:2px solid #1f2a2e', 'font-weight:800', 'font-size:13px',
-      'cursor:pointer', 'box-shadow:0 4px 12px rgba(0,0,0,0.18)',
-      'display:flex', 'align-items:center', 'gap:6px',
-      'transition:transform 0.15s ease'
+      'position:fixed',
+      'z-index:9997',
+      'padding:7px 13px',
+      'border-radius:999px',
+      'background:#72deff',
+      'color:#1f2a2e',
+      'border:1.5px solid #1f2a2e',
+      'font-weight:800',
+      'font-size:12px',
+      'cursor:pointer',
+      'display:inline-flex',
+      'align-items:center',
+      'gap:5px',
+      'line-height:1',
+      'box-shadow:0 3px 10px rgba(0,0,0,.15)',
+      'transition:transform .15s ease'
     ].join(';');
-    btn.onmouseover = () => btn.style.transform = 'scale(1.05)';
+    btn.onmouseover = () => btn.style.transform = 'scale(1.06)';
     btn.onmouseout = () => btn.style.transform = 'scale(1)';
-    btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 010 20M12 2a15 15 0 000 20"/></svg><span class="lang-label">DE</span>';
+    btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 010 20M12 2a15 15 0 000 20"/></svg><span class="lang-label">DE</span>';
     document.body.appendChild(btn);
+
+    const mq = window.matchMedia('(max-width: 991px)');
+    const place = () => {
+      if (mq.matches) {
+        // Mobile: bottom-left, smaller, away from WhatsApp (bottom-right)
+        btn.style.top = 'auto';
+        btn.style.right = 'auto';
+        btn.style.bottom = '18px';
+        btn.style.left = '18px';
+      } else {
+        // Desktop: top-right inside the dark top strip area (top:8px keeps it inside header bar)
+        btn.style.top = '14px';
+        btn.style.right = '18px';
+        btn.style.bottom = 'auto';
+        btn.style.left = 'auto';
+      }
+    };
+    mq.addEventListener ? mq.addEventListener('change', place) : mq.addListener(place);
+    place();
   }
+  const injectFloatingToggle = injectNavToggle;
 
   function updateToggleButtons(lang) {
     document.querySelectorAll('.lang-toggle-btn').forEach(btn => {
@@ -283,6 +317,7 @@ const SEO_DESCRIPTIONS = {
     const current = document.documentElement.lang === 'de' ? 'de' : 'en';
     const next = current === 'en' ? 'de' : 'en';
     setStoredLang(next);
+    try { localStorage.setItem(LANG_KEY + '-user', '1'); } catch (e) {}
     applyLang(next);
     try {
       const url = new URL(window.location.href);
@@ -299,7 +334,30 @@ const SEO_DESCRIPTIONS = {
   setStoredLang(initial);
   document.documentElement.lang = initial;
 
-  function init() { applyLang(initial); }
+  function init() {
+    applyLang(initial);
+    setTimeout(() => applyLang(initial), 300);
+    setTimeout(() => applyLang(initial), 1200);
+    setTimeout(() => applyLang(initial), 2500);
+    // Observe body for late DOM changes; pause observer during our own writes to avoid loops
+    let pending = false;
+    let paused = false;
+    const reapply = () => {
+      paused = true;
+      const lang = document.documentElement.lang === 'de' ? 'de' : 'en';
+      applyLang(lang);
+      // give the browser a frame, then re-enable observer
+      setTimeout(() => { paused = false; }, 50);
+    };
+    const obs = new MutationObserver(() => {
+      if (paused || pending) return;
+      pending = true;
+      setTimeout(() => { pending = false; reapply(); }, 250);
+    });
+    if (document.body) {
+      obs.observe(document.body, { childList: true, subtree: true });
+    }
+  }
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
   } else {
