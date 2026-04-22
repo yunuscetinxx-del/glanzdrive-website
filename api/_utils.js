@@ -1,5 +1,9 @@
 // Shared utilities for API endpoints
-// Storage: Upstash Redis (REST) if env vars present, else in-memory fallback (dev only)
+// Storage: Upstash Redis (REST) if env vars present, else local JSON file (Hostinger Node host),
+// else in-memory (last resort).
+
+import fs from 'fs';
+import path from 'path';
 
 const UP_URL = process.env.UPSTASH_REDIS_REST_URL;
 const UP_TOK = process.env.UPSTASH_REDIS_REST_TOKEN;
@@ -12,6 +16,34 @@ const RATE_LIMIT_PER_MIN = 5;
 
 // In-memory fallback (Vercel functions are stateless; this only works in single-region dev)
 const memStore = globalThis.__GLANZ_STORE__ ||= { messages: [], rates: {}, blocks: new Set() };
+
+// ---- Local file storage fallback (works on Hostinger Node app where Upstash is missing) ----
+const DATA_DIR = process.env.MPH_DATA_DIR || path.join(process.cwd(), 'data');
+const KV_FILE = path.join(DATA_DIR, 'kv.json');
+let __fileStore = null;
+function ensureFileStore() {
+  if (__fileStore) return __fileStore;
+  try {
+    if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
+    if (fs.existsSync(KV_FILE)) {
+      __fileStore = JSON.parse(fs.readFileSync(KV_FILE, 'utf8') || '{}');
+    } else {
+      __fileStore = {};
+    }
+  } catch (e) {
+    console.warn('[kv-file] init failed:', e.message);
+    __fileStore = {};
+  }
+  return __fileStore;
+}
+function persistFileStore() {
+  try {
+    if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
+    fs.writeFileSync(KV_FILE, JSON.stringify(__fileStore || {}, null, 2));
+  } catch (e) {
+    console.warn('[kv-file] write failed:', e.message);
+  }
+}
 
 async function kvCall(cmd, ...args) {
   if (!UP_URL || !UP_TOK) return null;
@@ -30,6 +62,26 @@ async function kvJson(path, body) {
     body: JSON.stringify(body),
   });
   return r.ok ? (await r.json()).result : null;
+}
+
+// POST raw value (text/plain) — most reliable way to SET arbitrary string in Upstash REST
+async function kvSetRaw(key, value) {
+  if (!UP_URL || !UP_TOK) return null;
+  try {
+    const r = await fetch(`${UP_URL}/set/${encodeURIComponent(key)}`, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${UP_TOK}`, 'Content-Type': 'text/plain' },
+      body: value,
+    });
+    if (!r.ok) {
+      console.warn('[upstash] SET failed', r.status, await r.text().catch(()=>''));
+      return null;
+    }
+    return (await r.json()).result;
+  } catch (e) {
+    console.warn('[upstash] SET error', e.message);
+    return null;
+  }
 }
 
 export async function saveMessage(msg) {
@@ -200,30 +252,44 @@ export async function readBodyLarge(req, maxBytes = 6_500_000) {
   });
 }
 
-// Generic key/value JSON store backed by Upstash (or memory fallback)
+// Generic key/value JSON store backed by Upstash → file → memory
 export async function kvGet(key) {
   if (UP_URL && UP_TOK) {
-    const v = await kvCall('get', key);
-    if (!v) return null;
-    try { return JSON.parse(v); } catch { return v; }
+    try {
+      const v = await kvCall('get', key);
+      if (v != null) {
+        try { return JSON.parse(v); } catch { return v; }
+      }
+    } catch (e) { console.warn('[kv] upstash GET error', e.message); }
   }
+  // File fallback
+  const fs1 = ensureFileStore();
+  if (fs1 && Object.prototype.hasOwnProperty.call(fs1, key)) return fs1[key];
   return memStore.kv?.[key] ?? null;
 }
 
 export async function kvSet(key, value) {
   const str = typeof value === 'string' ? value : JSON.stringify(value);
+  let upstashOk = false;
   if (UP_URL && UP_TOK) {
-    // Upstash REST: SET key value via POST body
-    await kvJson(`set/${encodeURIComponent(key)}`, str);
-    return true;
+    const r = await kvSetRaw(key, str);
+    upstashOk = r === 'OK' || r === 'ok' || r === true;
   }
+  // ALWAYS also write to file as durable backup (so admin edits survive restarts)
+  try {
+    const f = ensureFileStore();
+    f[key] = value;
+    persistFileStore();
+  } catch (e) { console.warn('[kv] file write error', e.message); }
   memStore.kv = memStore.kv || {};
   memStore.kv[key] = value;
   return true;
 }
 
 export async function kvDel(key) {
-  if (UP_URL && UP_TOK) { await kvCall('del', key); return true; }
+  if (UP_URL && UP_TOK) { try { await kvCall('del', key); } catch {} }
+  const f = ensureFileStore();
+  if (f && key in f) { delete f[key]; persistFileStore(); }
   if (memStore.kv) delete memStore.kv[key];
   return true;
 }

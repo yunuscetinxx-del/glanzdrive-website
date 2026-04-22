@@ -52,6 +52,49 @@ app.use((req, res, next) => {
 
 app.get('/api/health', (req, res) => res.json({ ok: true, ts: Date.now() }));
 
+// Diagnostic: shows which storage backend is active (does NOT leak secrets)
+app.get('/api/_diag', async (req, res) => {
+  const hasUpstash = !!(process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN);
+  let upstashWorks = false;
+  let upstashError = null;
+  if (hasUpstash) {
+    try {
+      const u = process.env.UPSTASH_REDIS_REST_URL;
+      const t = process.env.UPSTASH_REDIS_REST_TOKEN;
+      // test SET + GET
+      const testVal = 'mph-diag-' + Date.now();
+      const setR = await fetch(`${u}/set/mph_diag_test`, { method:'POST', headers:{ Authorization:`Bearer ${t}`, 'Content-Type':'text/plain' }, body: testVal });
+      if (!setR.ok) upstashError = `SET ${setR.status}`;
+      else {
+        const getR = await fetch(`${u}/get/mph_diag_test`, { headers:{ Authorization:`Bearer ${t}` } });
+        const gj = await getR.json().catch(()=>({}));
+        upstashWorks = gj.result === testVal;
+        if (!upstashWorks) upstashError = 'GET mismatch: ' + JSON.stringify(gj);
+      }
+    } catch (e) { upstashError = e.message; }
+  }
+  let fileWorks = false; let fileError = null; let fileSettings = null;
+  try {
+    const fs1 = await import('fs');
+    const path1 = await import('path');
+    const dir = path1.join(process.cwd(), 'data');
+    const file = path1.join(dir, 'kv.json');
+    fileWorks = fs1.existsSync(file);
+    if (fileWorks) {
+      const j = JSON.parse(fs1.readFileSync(file, 'utf8') || '{}');
+      fileSettings = j['site:settings'] ? { hasContact: !!j['site:settings'].contact, phone: j['site:settings'].contact?.phone, updatedAt: j['site:settings'].updatedAt } : null;
+    }
+  } catch (e) { fileError = e.message; }
+  res.json({
+    env: {
+      hasUpstash, hasJwt: !!process.env.JWT_SECRET, hasAdmin: !!(process.env.ADMIN_USER && process.env.ADMIN_PASSWORD),
+    },
+    upstash: { works: upstashWorks, error: upstashError },
+    file: { exists: fileWorks, error: fileError, settings: fileSettings, path: 'data/kv.json' },
+    cwd: process.cwd(),
+  });
+});
+
 const handlerCache = new Map();
 function apiRoute(method, route, file) {
   app[method.toLowerCase()](route, async (req, res) => {
