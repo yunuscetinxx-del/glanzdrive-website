@@ -10,7 +10,7 @@
 
 (function () {
   const CACHE_KEY = 'mph-settings-v1';
-  const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
+  const CACHE_TTL = 30 * 1000; // 30 seconds (admin edits apply quickly)
 
   const FILTER_CSS = {
     none:       'none',
@@ -33,19 +33,27 @@
   }
 
   async function loadSettings() {
+    // Allow forcing a fresh fetch via ?mph_refresh=1 in URL
+    let forceFresh = false;
+    try { forceFresh = new URLSearchParams(location.search).has('mph_refresh'); } catch {}
+    if (forceFresh) {
+      try { sessionStorage.removeItem(CACHE_KEY); } catch {}
+    }
     // Try cache first
-    try {
-      const cached = sessionStorage.getItem(CACHE_KEY);
-      if (cached) {
-        const { ts, data } = JSON.parse(cached);
-        if (Date.now() - ts < CACHE_TTL) {
-          window.__MPH_SETTINGS__ = data;
-          return data;
+    if (!forceFresh) {
+      try {
+        const cached = sessionStorage.getItem(CACHE_KEY);
+        if (cached) {
+          const { ts, data } = JSON.parse(cached);
+          if (Date.now() - ts < CACHE_TTL) {
+            window.__MPH_SETTINGS__ = data;
+            return data;
+          }
         }
-      }
-    } catch {}
+      } catch {}
+    }
     try {
-      const r = await fetch('/api/settings', { cache: 'no-cache' });
+      const r = await fetch('/api/settings?_=' + Date.now(), { cache: 'no-store' });
       if (!r.ok) throw new Error('http ' + r.status);
       const data = await r.json();
       window.__MPH_SETTINGS__ = data;

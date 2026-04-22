@@ -474,6 +474,12 @@ async function save() {
     if (!r.ok) throw new Error(j.error);
     SETTINGS = j.settings;
     toast('✅ Erfolgreich gespeichert!', 'success');
+    // Show a quick "view live" button so the user can verify changes immediately.
+    setTimeout(() => {
+      if (confirm('Änderungen gespeichert. Möchten Sie die Live-Seite jetzt mit den neuen Daten öffnen?')) {
+        window.open('/?mph_refresh=1&_=' + Date.now(), '_blank');
+      }
+    }, 200);
   } catch (e) {
     toast('❌ Fehler: ' + e.message, 'error');
   } finally {

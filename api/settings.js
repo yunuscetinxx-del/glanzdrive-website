@@ -98,7 +98,8 @@ export default async function handler(req, res) {
     if (req.method === 'GET') {
       const stored = await kvGet(SETTINGS_KEY);
       const merged = deepMerge(DEFAULT_SETTINGS, stored || {});
-      res.setHeader('Cache-Control', 'public, max-age=60');
+      // Short cache so admin changes appear quickly across the site
+      res.setHeader('Cache-Control', 'public, max-age=10, must-revalidate');
       return jsonResponse(res, 200, merged);
     }
 
