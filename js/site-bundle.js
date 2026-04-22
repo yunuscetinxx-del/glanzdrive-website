@@ -55,6 +55,103 @@ const MPH_CONFIG = {
     document.head.appendChild(s);
   }
 
+  // ============ 1b. FAQ Schema + Visible FAQ Section (Homepage only) ============
+  const FAQ_DE = [
+    { q: 'Was kostet eine Putzhilfe in Deutschland?',
+      a: 'Eine angemeldete Putzhilfe kostet in Deutschland zwischen 15 und 25 € pro Stunde. Reinigungsfirmen liegen bei 25–40 € pro Stunde, dafür sind Versicherung, Putzmittel und Vertretung enthalten. Mit dem Steuerbonus (§ 35a EStG) sparen Sie bis zu 20 % zurück.' },
+    { q: 'Muss ich meine Putzhilfe anmelden?',
+      a: 'Ja. Eine private Putzhilfe muss als Mini-Job über die Minijob-Zentrale angemeldet werden (Haushaltsscheck-Verfahren). Bei Reinigungsfirmen entfällt die Anmeldung – Sie erhalten eine Rechnung. Schwarzarbeit kann mit bis zu 5.000 € Bußgeld geahndet werden.' },
+    { q: 'Wie viel kann ich von der Steuer absetzen?',
+      a: 'Bei einer Mini-Job-Putzhilfe bis zu 510 € pro Jahr. Bei einer Reinigungsfirma bis zu 4.000 € pro Jahr (20 % von max. 20.000 € Rechnungsbetrag). Wichtig: Zahlung muss per Überweisung erfolgen, nicht bar.' },
+    { q: 'Sind Ihre Reinigungskräfte versichert?',
+      a: 'Ja. Alle vermittelten Reinigungskräfte sind haftpflichtversichert. Das deckt Schäden während der Reinigung ab – z. B. zerbrochene Vasen oder beschädigte Möbel. Die Versicherung gilt automatisch bei jedem Auftrag.' },
+    { q: 'In welchen Städten sind Sie verfügbar?',
+      a: 'Wir sind bundesweit aktiv – mit Schwerpunkt in Berlin, München, Hamburg, Köln, Frankfurt, Stuttgart, Düsseldorf und vielen weiteren Städten. Senden Sie uns eine Anfrage mit Ihrer PLZ – wir prüfen die Verfügbarkeit kostenfrei.' },
+    { q: 'Wie schnell kann ich eine Putzhilfe bekommen?',
+      a: 'In der Regel innerhalb von 48–72 Stunden. Für Endreinigungen (Wohnungsübergabe) und Notfälle bieten wir auch Express-Termine innerhalb von 24 Stunden an – je nach Region und Verfügbarkeit.' },
+    { q: 'Bringen Sie eigene Putzmittel mit?',
+      a: 'Ja, auf Wunsch. Reinigungsfirmen bringen standardmäßig professionelle Mittel und Geräte mit. Bei einer privaten Putzhilfe stellen meist Sie die Mittel – das spart 1–2 € pro Stunde. Wir besprechen das vor dem ersten Termin.' },
+    { q: 'Kann ich die Reinigung kurzfristig absagen?',
+      a: 'Ja. Bis 24 Stunden vor dem Termin ist die Absage kostenfrei. Bei kürzfristigen Absagen können je nach Vertrag Stornogebühren anfallen. Im Krankheitsfall finden wir gemeinsam eine flexible Lösung.' },
+  ];
+  const FAQ_EN = [
+    { q: 'How much does a cleaning helper cost in Germany?',
+      a: 'A registered cleaning helper costs between €15–25 per hour. Cleaning companies charge €25–40, including insurance, supplies and substitution. With tax bonus (§ 35a) you save up to 20 % back.' },
+    { q: 'Do I have to register my cleaning helper?',
+      a: 'Yes. Private helpers must be registered as a Mini-Job via the Minijob-Zentrale. With cleaning companies you receive an invoice — no registration required. Undeclared work can be fined up to €5,000.' },
+    { q: 'How much can I deduct from taxes?',
+      a: 'Mini-Job: up to €510/year. Cleaning company: up to €4,000/year (20 % of max €20,000 invoice). Important: payment must be by bank transfer, not cash.' },
+    { q: 'Are your cleaners insured?',
+      a: 'Yes. All cleaners are covered by liability insurance for damages during cleaning — broken vases, damaged furniture, etc. Coverage is automatic on every job.' },
+    { q: 'Which cities do you cover?',
+      a: 'Nationwide — with focus on Berlin, Munich, Hamburg, Cologne, Frankfurt, Stuttgart, Düsseldorf and many more. Send us your ZIP — we check availability for free.' },
+    { q: 'How fast can I book a cleaner?',
+      a: 'Usually within 48–72 hours. For move-out cleanings and emergencies we offer express slots within 24 hours, depending on region.' },
+    { q: 'Do you bring your own cleaning supplies?',
+      a: 'Yes, on request. Cleaning companies bring professional supplies by default. With private helpers you usually provide them — saves €1–2/hour. We agree before first appointment.' },
+    { q: 'Can I cancel a cleaning short-notice?',
+      a: 'Yes. Cancellation is free up to 24 hours before. Shorter notice may incur fees per contract. In case of illness we find a flexible solution.' },
+  ];
+
+  function injectFaq() {
+    if (location.pathname !== '/' && location.pathname !== '/index.html') return;
+    if (document.getElementById('mph-faq-schema')) return;
+    const lang = document.documentElement.lang || 'en';
+    const items = lang === 'de' ? FAQ_DE : FAQ_EN;
+
+    // 1. JSON-LD FAQPage schema
+    const schema = {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: items.map(it => ({
+        '@type': 'Question',
+        name: it.q,
+        acceptedAnswer: { '@type': 'Answer', text: it.a },
+      })),
+    };
+    const sc = document.createElement('script');
+    sc.id = 'mph-faq-schema';
+    sc.type = 'application/ld+json';
+    sc.textContent = JSON.stringify(schema);
+    document.head.appendChild(sc);
+
+    // 2. Visible FAQ section (before footer)
+    const footer = document.querySelector('footer');
+    if (!footer) return;
+    const sec = document.createElement('section');
+    sec.id = 'mph-faq';
+    sec.style.cssText = 'background:#f7fbfc;padding:60px 20px;font-family:system-ui,-apple-system,sans-serif;';
+    sec.innerHTML = `
+      <div style="max-width:880px;margin:0 auto;">
+        <div style="text-align:center;margin-bottom:36px;">
+          <span style="display:inline-block;background:#72deff;color:#1f2a2e;padding:6px 16px;border-radius:999px;font-weight:700;font-size:0.8rem;margin-bottom:14px;">FAQ</span>
+          <h2 style="font-size:2rem;margin:0 0 10px;color:#1f2a2e;">${T('Frequently Asked Questions', 'Häufig gestellte Fragen')}</h2>
+          <p style="color:#5a6b71;margin:0;font-size:1rem;">${T('Everything you need to know before booking a cleaner.', 'Alles, was Sie vor der Buchung wissen müssen.')}</p>
+        </div>
+        <div id="mph-faq-list">
+          ${items.map((it, i) => `
+            <details style="background:#fff;border-radius:12px;margin-bottom:12px;box-shadow:0 2px 8px rgba(31,42,46,0.06);overflow:hidden;">
+              <summary style="padding:18px 22px;cursor:pointer;font-weight:700;font-size:1.02rem;color:#1f2a2e;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:12px;">
+                <span>${it.q}</span>
+                <span style="color:#72deff;font-size:1.4rem;font-weight:400;transition:transform 0.2s;">+</span>
+              </summary>
+              <div style="padding:0 22px 20px;color:#3a4548;line-height:1.65;font-size:0.95rem;">${it.a}</div>
+            </details>
+          `).join('')}
+        </div>
+        <div style="text-align:center;margin-top:30px;">
+          <a href="/contact-us/" style="display:inline-block;background:#1f2a2e;color:#fff;padding:14px 32px;border-radius:999px;font-weight:700;text-decoration:none;">${T('Still have questions? Contact us', 'Noch Fragen? Kontaktieren Sie uns')}</a>
+        </div>
+      </div>
+      <style>
+        #mph-faq details[open] summary span:last-child{transform:rotate(45deg);}
+        #mph-faq summary::-webkit-details-marker{display:none;}
+        #mph-faq summary:hover{background:#f0fbff;}
+      </style>
+    `;
+    footer.parentNode.insertBefore(sec, footer);
+  }
+
   // ============ 2. Cookie Consent (GDPR/DSGVO) ============
   function injectCookieConsent() {
     if (localStorage.getItem('gd-cookie-consent')) {
@@ -316,6 +413,7 @@ const MPH_CONFIG = {
     injectStickyCta();
     injectChatWidget();
     injectBlogNav();
+    injectFaq();
     attachQuoteForm();
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
