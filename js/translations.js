@@ -274,11 +274,11 @@ const SEO_DESCRIPTIONS = {
     const mq = window.matchMedia('(max-width: 991px)');
     const place = () => {
       if (mq.matches) {
-        // Mobile: bottom-left, smaller, away from WhatsApp (bottom-right)
-        btn.style.top = 'auto';
-        btn.style.right = 'auto';
-        btn.style.bottom = '18px';
-        btn.style.left = '18px';
+        // Mobile: keep language switch at top so it never collides with floating action buttons.
+        btn.style.top = '14px';
+        btn.style.right = '18px';
+        btn.style.bottom = 'auto';
+        btn.style.left = 'auto';
       } else {
         // Desktop: top-right inside the dark top strip area (top:8px keeps it inside header bar)
         btn.style.top = '14px';
