@@ -66,6 +66,48 @@
     });
   }
 
+  // ============ Animated brand name next to logo ============
+  function applyBrandText(s) {
+    const name = (s.brand && s.brand.name) || 'Meine Putzhilfe';
+    if (!document.getElementById('mph-brand-anim-css')) {
+      const st = document.createElement('style');
+      st.id = 'mph-brand-anim-css';
+      st.textContent = [
+        '@keyframes mphBrandType { from { width: 0 } to { width: 100% } }',
+        '@keyframes mphBrandCaret { 0%,100% { border-color: transparent } 50% { border-color: #72deff } }',
+        '@keyframes mphBrandShimmer { 0% { background-position: 200% 0 } 100% { background-position: -200% 0 } }',
+        '@keyframes mphBrandFloat { 0%,100% { transform: translateY(0) } 50% { transform: translateY(-2px) } }',
+        '.mph-brand-text { display:inline-flex; align-items:center; margin-left:10px; font-weight:800;',
+          ' font-size:clamp(0.95rem, 1.6vw, 1.25rem); letter-spacing:0.2px; white-space:nowrap;',
+          ' user-select:none; pointer-events:none;',
+          ' background:linear-gradient(90deg,#1f2a2e 0%,#0099d6 50%,#72deff 100%); background-size:200% 100%;',
+          ' -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;',
+          ' animation: mphBrandFloat 3s ease-in-out infinite, mphBrandShimmer 6s linear infinite; }',
+        '.mph-brand-text > span.inner { display:inline-block; overflow:hidden; white-space:nowrap;',
+          ' border-right:2px solid #72deff;',
+          ' animation: mphBrandType 2.2s steps(22, end) 0.2s 1 both, mphBrandCaret 0.85s step-end infinite; }',
+        '.dark .mph-brand-text { background:linear-gradient(90deg,#fff 0%,#72deff 50%,#fff 100%);',
+          ' -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; }',
+        '@media (max-width:480px) { .mph-brand-text { display:none } }'
+      ].join('\n');
+      document.head.appendChild(st);
+    }
+
+    const logos = document.querySelectorAll('a > img[alt*="Putzhilfe" i]');
+    logos.forEach(img => {
+      const link = img.parentElement;
+      if (!link || link.dataset.mphBrandBound) return;
+      link.dataset.mphBrandBound = '1';
+      // Make link a flex row so text aligns nicely with the logo
+      try { link.style.display = 'inline-flex'; link.style.alignItems = 'center'; } catch (_) {}
+      const span = document.createElement('span');
+      span.className = 'mph-brand-text';
+      span.setAttribute('aria-hidden', 'true');
+      span.innerHTML = '<span class="inner">' + name + '</span>';
+      link.appendChild(span);
+    });
+  }
+
   function applyContact(s) {
     const c = s.contact || {};
     // Phone links
@@ -268,6 +310,7 @@
   function applyAll(s) {
     if (!s) return;
     applyLogo(s);
+    applyBrandText(s);
     applyContact(s);
     buildHero(s);
     buildFooter(s);

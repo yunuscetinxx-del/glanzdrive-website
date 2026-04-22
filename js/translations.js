@@ -246,49 +246,74 @@ const SEO_DESCRIPTIONS = {
     btn.className = 'lang-toggle-btn';
     btn.type = 'button';
     btn.onclick = toggleLang;
-    // Position: desktop = top-right inside header strip (not floating over content);
-    // mobile = bottom-left small (away from WhatsApp bottom-right + chat widget)
-    btn.style.cssText = [
-      'position:fixed',
-      'z-index:9997',
-      'padding:7px 13px',
-      'border-radius:999px',
-      'background:#72deff',
-      'color:#1f2a2e',
-      'border:1.5px solid #1f2a2e',
-      'font-weight:800',
-      'font-size:12px',
-      'cursor:pointer',
-      'display:inline-flex',
-      'align-items:center',
-      'gap:5px',
-      'line-height:1',
-      'box-shadow:0 3px 10px rgba(0,0,0,.15)',
-      'transition:transform .15s ease'
-    ].join(';');
+    btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 010 20M12 2a15 15 0 000 20"/></svg><span class="lang-label">DE</span>';
+
+    // Try to dock the language button right next to the dark/light mode toggle.
+    // The dark mode button contains the moon-icon image. If we find it, we insert
+    // the language button as its sibling (matching the same visual style).
+    function dockNextToTheme() {
+      const moon = document.querySelector('img[alt="moon-icon"]');
+      const themeBtn = moon ? moon.closest('button') : null;
+      if (!themeBtn || !themeBtn.parentElement) return false;
+      // Inline style that mirrors a small pill button next to the theme toggle
+      btn.style.cssText = [
+        'position:static',
+        'margin-left:10px',
+        'padding:6px 11px',
+        'border-radius:999px',
+        'background:#72deff',
+        'color:#1f2a2e',
+        'border:1.5px solid #1f2a2e',
+        'font-weight:800',
+        'font-size:12px',
+        'cursor:pointer',
+        'display:inline-flex',
+        'align-items:center',
+        'gap:5px',
+        'line-height:1',
+        'box-shadow:0 2px 6px rgba(0,0,0,.12)',
+        'transition:transform .15s ease'
+      ].join(';');
+      themeBtn.insertAdjacentElement('afterend', btn);
+      return true;
+    }
+
+    function fallbackFloat() {
+      btn.style.cssText = [
+        'position:fixed',
+        'top:14px',
+        'right:18px',
+        'z-index:9997',
+        'padding:7px 13px',
+        'border-radius:999px',
+        'background:#72deff',
+        'color:#1f2a2e',
+        'border:1.5px solid #1f2a2e',
+        'font-weight:800',
+        'font-size:12px',
+        'cursor:pointer',
+        'display:inline-flex',
+        'align-items:center',
+        'gap:5px',
+        'line-height:1',
+        'box-shadow:0 3px 10px rgba(0,0,0,.15)',
+        'transition:transform .15s ease'
+      ].join(';');
+      if (!btn.isConnected) document.body.appendChild(btn);
+    }
+
     btn.onmouseover = () => btn.style.transform = 'scale(1.06)';
     btn.onmouseout = () => btn.style.transform = 'scale(1)';
-    btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 010 20M12 2a15 15 0 000 20"/></svg><span class="lang-label">DE</span>';
-    document.body.appendChild(btn);
 
-    const mq = window.matchMedia('(max-width: 991px)');
-    const place = () => {
-      if (mq.matches) {
-        // Mobile: keep language switch at top so it never collides with floating action buttons.
-        btn.style.top = '14px';
-        btn.style.right = '18px';
-        btn.style.bottom = 'auto';
-        btn.style.left = 'auto';
-      } else {
-        // Desktop: top-right inside the dark top strip area (top:8px keeps it inside header bar)
-        btn.style.top = '14px';
-        btn.style.right = '18px';
-        btn.style.bottom = 'auto';
-        btn.style.left = 'auto';
-      }
-    };
-    mq.addEventListener ? mq.addEventListener('change', place) : mq.addListener(place);
-    place();
+    if (!dockNextToTheme()) {
+      // Fallback now, then retry once the rest of the page paints
+      fallbackFloat();
+      let tries = 0;
+      const t = setInterval(() => {
+        tries++;
+        if (dockNextToTheme() || tries > 10) clearInterval(t);
+      }, 250);
+    }
   }
   const injectFloatingToggle = injectNavToggle;
 
