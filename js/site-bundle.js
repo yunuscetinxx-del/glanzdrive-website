@@ -361,15 +361,113 @@ const MPH_CONFIG = {
           const r = await fetch('/api/quote', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
           const j = await r.json();
           if (!r.ok) throw new Error(j.error || 'Failed');
-          showToast(T('Thank you! We will contact you shortly.', 'Vielen Dank! Wir melden uns in Kürze.'), 'success');
+          showThankYouModal(payload.name);
           form.reset();
+          // Reset all checkboxes visually too
+          form.parentElement.querySelectorAll('span[role="checkbox"][aria-checked="true"]').forEach(span => {
+            span.setAttribute('aria-checked', 'false');
+            span.setAttribute('data-unchecked', '');
+            span.removeAttribute('data-checked');
+            span.innerHTML = '';
+            span.style.background = '';
+            span.style.borderColor = '';
+            const inp = span.parentElement?.querySelector('input[type="checkbox"][aria-hidden="true"]');
+            if (inp) inp.checked = false;
+          });
         } catch (e) {
-          showToast(T('Could not send. Please try again or call us.', 'Senden fehlgeschlagen. Bitte erneut versuchen.'), 'error');
+          showToast(T('Could not send. Please try again or call us.', 'Senden fehlgeschlagen. Bitte erneut versuchen oder rufen Sie uns an.'), 'error');
         } finally {
           if (submit) { submit.disabled = false; submit.textContent = origLabel; }
         }
       });
     });
+  }
+
+  function showThankYouModal(name) {
+    // Remove existing modal if any
+    const existing = document.getElementById('mph-thanks-modal');
+    if (existing) existing.remove();
+
+    const lang = document.documentElement.lang === 'de' ? 'de' : 'en';
+    const phone = (MPH_CONFIG.phone || '+49 176 31795410').replace(/\s+/g, '');
+    const wa = (MPH_CONFIG.whatsappNumber || '4917631795410').replace(/\D/g, '');
+    const firstName = (name || '').trim().split(/\s+/)[0] || '';
+
+    const txt = lang === 'de' ? {
+      title: firstName ? `Vielen Dank, ${firstName}! 🎉` : 'Vielen Dank! 🎉',
+      sub: 'Ihre Anfrage ist bei uns eingegangen.',
+      promise: 'Wir melden uns innerhalb von <strong>2 Stunden</strong> mit einem persönlichen Angebot per E-Mail oder WhatsApp.',
+      faster: 'Sie möchten es schneller besprechen? Schreiben Sie uns direkt:',
+      wa: 'WhatsApp Nachricht senden',
+      call: 'Jetzt anrufen',
+      close: 'Schließen',
+      waMsg: 'Hallo Meine Putzhilfe! Ich habe gerade ein Angebot über die Webseite angefragt und hätte gerne kurz Rückmeldung.'
+    } : {
+      title: firstName ? `Thank you, ${firstName}! 🎉` : 'Thank you! 🎉',
+      sub: 'Your request has been received.',
+      promise: 'We will respond within <strong>2 hours</strong> with a personalized quote via email or WhatsApp.',
+      faster: 'Want to talk faster? Reach out directly:',
+      wa: 'Send WhatsApp Message',
+      call: 'Call Now',
+      close: 'Close',
+      waMsg: 'Hello Meine Putzhilfe! I just submitted a quote request on your website and wanted a quick response.'
+    };
+
+    const overlay = document.createElement('div');
+    overlay.id = 'mph-thanks-modal';
+    overlay.style.cssText = 'position:fixed;inset:0;background:rgba(15,23,28,0.65);z-index:99999;display:flex;align-items:center;justify-content:center;padding:20px;animation:mphFade .25s ease;backdrop-filter:blur(4px);';
+
+    overlay.innerHTML = `
+      <div role="dialog" aria-modal="true" aria-labelledby="mph-thanks-title" style="background:#fff;border-radius:18px;max-width:460px;width:100%;padding:36px 28px 28px;box-shadow:0 20px 60px rgba(0,0,0,.35);position:relative;animation:mphPop .3s cubic-bezier(.18,.89,.32,1.28);">
+        <button type="button" id="mph-thanks-close" aria-label="${txt.close}" style="position:absolute;top:12px;right:12px;background:#f3f4f6;border:none;width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:18px;color:#555;display:flex;align-items:center;justify-content:center;">×</button>
+
+        <div style="text-align:center;margin-bottom:18px;">
+          <div style="width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,#72deff 0%,#45b8f5 100%);display:inline-flex;align-items:center;justify-content:center;margin-bottom:14px;box-shadow:0 6px 18px rgba(114,222,255,.4);">
+            <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="#1f2a2e" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <h3 id="mph-thanks-title" style="margin:0 0 6px;font-size:1.5rem;font-weight:800;color:#1f2a2e;">${txt.title}</h3>
+          <p style="margin:0;color:#666;font-size:.95rem;">${txt.sub}</p>
+        </div>
+
+        <div style="background:#f0fbff;border-left:4px solid #72deff;padding:14px 16px;border-radius:8px;margin-bottom:20px;">
+          <p style="margin:0;color:#1f2a2e;font-size:.92rem;line-height:1.55;">${txt.promise}</p>
+        </div>
+
+        <p style="margin:0 0 12px;color:#555;font-size:.88rem;text-align:center;">${txt.faster}</p>
+
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <a href="https://wa.me/${wa}?text=${encodeURIComponent(txt.waMsg)}" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;gap:10px;background:#25D366;color:#fff;padding:14px 18px;border-radius:10px;text-decoration:none;font-weight:700;font-size:.95rem;transition:transform .15s,box-shadow .15s;box-shadow:0 4px 12px rgba(37,211,102,.3);">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            ${txt.wa}
+          </a>
+          <a href="tel:${phone}" style="display:flex;align-items:center;justify-content:center;gap:10px;background:#1f2a2e;color:#fff;padding:14px 18px;border-radius:10px;text-decoration:none;font-weight:700;font-size:.95rem;transition:transform .15s,box-shadow .15s;box-shadow:0 4px 12px rgba(31,42,46,.25);">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.13.96.37 1.9.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.33 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg>
+            ${txt.call} · ${MPH_CONFIG.phone || '+49 176 3179 5410'}
+          </a>
+        </div>
+      </div>
+    `;
+
+    document.body.appendChild(overlay);
+    document.body.style.overflow = 'hidden';
+
+    const close = () => {
+      overlay.style.animation = 'mphFade .2s ease reverse';
+      setTimeout(() => { overlay.remove(); document.body.style.overflow = ''; }, 180);
+    };
+    overlay.querySelector('#mph-thanks-close').addEventListener('click', close);
+    overlay.addEventListener('click', e => { if (e.target === overlay) close(); });
+    document.addEventListener('keydown', function esc(e) {
+      if (e.key === 'Escape') { close(); document.removeEventListener('keydown', esc); }
+    });
+
+    // Inject animation styles once
+    if (!document.getElementById('mph-thanks-css')) {
+      const s = document.createElement('style');
+      s.id = 'mph-thanks-css';
+      s.textContent = '@keyframes mphFade{from{opacity:0}to{opacity:1}}@keyframes mphPop{from{opacity:0;transform:scale(.85) translateY(20px)}to{opacity:1;transform:scale(1) translateY(0)}}#mph-thanks-modal a:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,0,0,.25)!important}#mph-thanks-close:hover{background:#e5e7eb!important;color:#1f2a2e!important}';
+      document.head.appendChild(s);
+    }
   }
 
   function showToast(msg, type) {
