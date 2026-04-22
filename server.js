@@ -87,4 +87,4 @@ app.use((err, req, res, next) => {
 process.on('uncaughtException', e => console.error('[uncaught]', e));
 process.on('unhandledRejection', e => console.error('[unhandled]', e));
 
-app.listen(PORT, () => console.log('GlanzDrive listening on ' + PORT));
+app.listen(PORT, '0.0.0.0', () => console.log('GlanzDrive listening on 0.0.0.0:' + PORT));
