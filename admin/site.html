@@ -294,8 +294,9 @@
 </div>
 
 <script>
-const TOKEN_KEY = 'mph-admin-token';
-let TOKEN = localStorage.getItem(TOKEN_KEY);
+const TOKEN_KEY = 'gd-admin-token';
+const LEGACY_TOKEN_KEY = 'mph-admin-token';
+let TOKEN = localStorage.getItem(TOKEN_KEY) || localStorage.getItem(LEGACY_TOKEN_KEY);
 let SETTINGS = null;
 let CITIES = [];
 
@@ -309,14 +310,20 @@ const toast = (msg, type='success') => {
 async function login(u, p) {
   const r = await fetch('/api/login', {
     method: 'POST', headers: {'Content-Type':'application/json'},
-    body: JSON.stringify({ username: u, password: p })
+    body: JSON.stringify({ user: u, pass: p })
   });
   const j = await r.json();
   if (!r.ok || !j.token) throw new Error(j.error || 'Login fehlgeschlagen');
   TOKEN = j.token;
   localStorage.setItem(TOKEN_KEY, TOKEN);
+  localStorage.removeItem(LEGACY_TOKEN_KEY);
 }
-function logout() { localStorage.removeItem(TOKEN_KEY); TOKEN = null; location.reload(); }
+function logout() {
+  localStorage.removeItem(TOKEN_KEY);
+  localStorage.removeItem(LEGACY_TOKEN_KEY);
+  TOKEN = null;
+  location.reload();
+}
 
 $('#loginForm').addEventListener('submit', async e => {
   e.preventDefault();
@@ -656,7 +663,9 @@ async function showApp() {
       const r = await fetch('/api/messages?limit=1', { headers: {'Authorization':'Bearer '+TOKEN} });
       if (r.ok) { showApp(); return; }
     } catch {}
-    localStorage.removeItem(TOKEN_KEY); TOKEN = null;
+    localStorage.removeItem(TOKEN_KEY);
+    localStorage.removeItem(LEGACY_TOKEN_KEY);
+    TOKEN = null;
   }
   $('#loginView').style.display = 'flex';
 })();
