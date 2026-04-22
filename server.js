@@ -82,6 +82,17 @@ apiRoute('GET', '/api/messages', 'messages.js');
 apiRoute('POST', '/api/reply', 'reply.js');
 apiRoute('POST', '/api/chat', 'chat.js');
 
+// Site editor + media + blog
+apiRoute('GET',    '/api/settings', 'settings.js');
+apiRoute('POST',   '/api/settings', 'settings.js');
+apiRoute('PUT',    '/api/settings', 'settings.js');
+apiRoute('GET',    '/api/media',    'media.js');
+apiRoute('POST',   '/api/media',    'media.js');
+apiRoute('GET',    '/api/posts',    'blog-admin.js');
+apiRoute('POST',   '/api/posts',    'blog-admin.js');
+apiRoute('PUT',    '/api/posts',    'blog-admin.js');
+apiRoute('DELETE', '/api/posts',    'blog-admin.js');
+
 app.use((req, res, next) => {
   if (req.path === '/' || req.path.includes('.') || req.path.startsWith('/api')) return next();
   const clean = req.path.replace(/\/$/, '');

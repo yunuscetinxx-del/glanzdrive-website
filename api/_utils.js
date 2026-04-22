@@ -183,3 +183,79 @@ export async function readBody(req) {
     req.on('error', reject);
   });
 }
+
+// Larger body reader for uploads (up to ~6MB after base64 expansion = ~4.5MB raw)
+export async function readBodyLarge(req, maxBytes = 6_500_000) {
+  return new Promise((resolve, reject) => {
+    let body = '';
+    req.on('data', chunk => {
+      body += chunk;
+      if (body.length > maxBytes) { reject(new Error('body too large')); req.destroy(); }
+    });
+    req.on('end', () => {
+      try { resolve(body ? JSON.parse(body) : {}); }
+      catch { resolve({}); }
+    });
+    req.on('error', reject);
+  });
+}
+
+// Generic key/value JSON store backed by Upstash (or memory fallback)
+export async function kvGet(key) {
+  if (UP_URL && UP_TOK) {
+    const v = await kvCall('get', key);
+    if (!v) return null;
+    try { return JSON.parse(v); } catch { return v; }
+  }
+  return memStore.kv?.[key] ?? null;
+}
+
+export async function kvSet(key, value) {
+  const str = typeof value === 'string' ? value : JSON.stringify(value);
+  if (UP_URL && UP_TOK) {
+    // Upstash REST: SET key value via POST body
+    await kvJson(`set/${encodeURIComponent(key)}`, str);
+    return true;
+  }
+  memStore.kv = memStore.kv || {};
+  memStore.kv[key] = value;
+  return true;
+}
+
+export async function kvDel(key) {
+  if (UP_URL && UP_TOK) { await kvCall('del', key); return true; }
+  if (memStore.kv) delete memStore.kv[key];
+  return true;
+}
+
+// List helpers for blog index (sorted set of slugs by timestamp)
+export async function kvListPush(key, value) {
+  const str = typeof value === 'string' ? value : JSON.stringify(value);
+  if (UP_URL && UP_TOK) {
+    await kvJson(`lpush/${encodeURIComponent(key)}`, [str]);
+    return true;
+  }
+  memStore.kv = memStore.kv || {};
+  memStore.kv[key] = memStore.kv[key] || [];
+  memStore.kv[key].unshift(value);
+  return true;
+}
+
+export async function kvListAll(key) {
+  if (UP_URL && UP_TOK) {
+    const arr = await kvCall('lrange', key, '0', '999');
+    return (arr || []).map(s => { try { return JSON.parse(s); } catch { return s; } });
+  }
+  return (memStore.kv?.[key]) || [];
+}
+
+export async function kvListReplace(key, items) {
+  if (UP_URL && UP_TOK) {
+    await kvCall('del', key);
+    if (items.length) await kvJson(`rpush/${encodeURIComponent(key)}`, items.map(v => typeof v === 'string' ? v : JSON.stringify(v)));
+    return true;
+  }
+  memStore.kv = memStore.kv || {};
+  memStore.kv[key] = items.slice();
+  return true;
+}
