@@ -88,6 +88,8 @@ function deepMerge(base, patch) {
     const bv = base ? base[k] : undefined;
     const pv = patch[k];
     if (pv && typeof pv === 'object' && !Array.isArray(pv)) out[k] = deepMerge(bv, pv);
+    // Keep default if saved value is empty string (don't let "" override defaults)
+    else if (pv === '' && bv !== undefined && bv !== '') out[k] = bv;
     else out[k] = pv;
   }
   return out;

@@ -258,7 +258,17 @@ export async function kvGet(key) {
     try {
       const v = await kvCall('get', key);
       if (v != null) {
-        try { return JSON.parse(v); } catch { return v; }
+        // v is the raw result from Upstash. Parse once.
+        let parsed;
+        try { parsed = typeof v === 'string' ? JSON.parse(v) : v; } catch { parsed = v; }
+        // If we got a string again (double-encoded), parse once more
+        if (typeof parsed === 'string') {
+          try { parsed = JSON.parse(parsed); } catch {}
+        }
+        // Only accept object/array results, not plain strings (avoids char-spread bug)
+        if (parsed !== null && typeof parsed === 'object') return parsed;
+        // Fall through to file if result is still a string (likely corruption)
+        console.warn('[kv] upstash returned non-object for', key, '- falling back to file');
       }
     } catch (e) { console.warn('[kv] upstash GET error', e.message); }
   }
