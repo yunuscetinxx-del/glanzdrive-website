@@ -81,7 +81,11 @@ const DEFAULT_SETTINGS = {
 };
 
 function deepMerge(base, patch) {
-  if (Array.isArray(patch)) return patch.slice();
+  if (Array.isArray(patch)) {
+    // Preserve non-empty default array if patch is empty
+    if (patch.length === 0 && Array.isArray(base) && base.length > 0) return base.slice();
+    return patch.slice();
+  }
   if (!patch || typeof patch !== 'object') return patch;
   const out = { ...(base || {}) };
   for (const k of Object.keys(patch)) {
